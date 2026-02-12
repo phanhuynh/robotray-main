@@ -1,0 +1,11 @@
+{
+  "total_files": 150,
+  "total_data_points": 307200,
+  "energy_min": -11.06083485515937,
+  "energy_max": 41012.12715647987,
+  "energy_mean": 20500.53316081236,
+  "intensity_min": 0.0,
+  "intensity_max": 521.7930603659488,
+  "intensity_mean": 49.60844604548126,
+  "non_zero_points": 293562
+}

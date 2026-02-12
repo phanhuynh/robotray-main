@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: Profile Builder
+Implementation-Version: ngx-v3.5
+Main-Class: com.sciaps.Main
+
