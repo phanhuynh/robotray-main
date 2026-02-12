@@ -1974,7 +1974,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
     import datetime
     import requests
     import csv
-    global TRAY_SEQUENCE_ROW, FIRST_CUP_X, FIRST_CUP_Y, TEST_COUNTER
+    global TRAY_SEQUENCE_ROW, FIRST_CUP_X, FIRST_CUP_Y
     
     # Check if sample type is specified
     if not sample_type or sample_type == "not specified":
@@ -2001,29 +2001,6 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
             print(f"[COMBO SEQUENCE 3] Moved to first cup (X={FIRST_CUP_X}, Y={FIRST_CUP_Y})")
         except Exception as e:
             print(f"[COMBO SEQUENCE 3] Warning: Could not move to first cup: {e}")
-    
-    # Wait 3 seconds for tray movement to complete before starting shots
-    print(f"[COMBO SEQUENCE 3] Waiting 3 seconds for tray movement to finish...")
-    time.sleep(3)
-    print(f"[COMBO SEQUENCE 3] Starting shots now")
-
-    # Create a new folder for this sequence
-    sequence_folder = None
-    if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
-        now = datetime.datetime.now()
-        date_str = now.strftime("%Y_%m_%d")
-        # Use current TEST_COUNTER as first test number
-        first_test_num = TEST_COUNTER
-        folder_name = f"{first_test_num:06d}_{date_str}_{sample_type}_{combo_count}"
-        sequence_folder = os.path.join(SAVED_FOLDER, folder_name)
-        try:
-            os.makedirs(sequence_folder, exist_ok=True)
-            print(f"[COMBO SEQUENCE 3] Created sequence folder: {folder_name}")
-        except Exception as e:
-            print(f"[COMBO SEQUENCE 3] Error creating sequence folder: {e}")
-            sequence_folder = SAVED_FOLDER  # Fall back to main folder
-    else:
-        print(f"[COMBO SEQUENCE 3] Warning: SAVED_FOLDER not configured")
 
     first_num = None
     last_num = None
@@ -2051,7 +2028,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                 num_spectra = len(mining_result.get("spectra", []))
                 print(f"[COMBO SEQUENCE 3] Mining test received {num_spectra} spectra")
 
-                if sequence_folder and os.path.exists(sequence_folder):
+                if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
                     now = datetime.datetime.now()
                     timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
                     
@@ -2076,7 +2053,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                             shot_num += 1
 
                             csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_{sample_type}.csv"
-                            csv_filepath = os.path.join(sequence_folder, csv_filename)
+                            csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
 
                             with open(csv_filepath, 'w') as f:
                                 f.write("Energy (keV),Intensity (CPS)\n")
@@ -2125,7 +2102,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                 num_spectra = len(soil_result.get("spectra", []))
                 print(f"[COMBO SEQUENCE 3] Soil test received {num_spectra} spectra")
 
-                if sequence_folder and os.path.exists(sequence_folder):
+                if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
                     now = datetime.datetime.now()
                     timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
                     
@@ -2150,7 +2127,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                             shot_num += 1
 
                             csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_{sample_type}.csv"
-                            csv_filepath = os.path.join(sequence_folder, csv_filename)
+                            csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
 
                             with open(csv_filepath, 'w') as f:
                                 f.write("Energy (keV),Intensity (CPS)\n")
@@ -2188,11 +2165,11 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
             results.append(f"Soil: error ({str(e)[:50]})")
 
         # Save chemistry data to CSV for this test
-        if chemistry_rows and sequence_folder and os.path.exists(sequence_folder):
+        if chemistry_rows and SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
             try:
                 chem_now = datetime.datetime.now()
                 chem_timestamp = chem_now.strftime("%Y_%m_%d_%H%M%S") + f"{int(chem_now.microsecond / 10000):02d}"
-                chemistry_csv = os.path.join(sequence_folder, f"{test_num:06d}_{chem_timestamp}_chemistry_{sample_type}.csv")
+                chemistry_csv = os.path.join(SAVED_FOLDER, f"{test_num:06d}_{chem_timestamp}_chemistry_{sample_type}.csv")
                 
                 ELEMENT_SYMBOLS = {
                     1: "H", 2: "He", 3: "Li", 4: "Be", 5: "B", 6: "C", 7: "N", 8: "O", 9: "F", 10: "Ne",
@@ -2249,11 +2226,11 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                 print(f"[COMBO SEQUENCE 3] Error saving chemistry data: {e}")
 
         # Save single screenshot after both tests complete
-        if sequence_folder and os.path.exists(sequence_folder):
+        if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
             now = datetime.datetime.now()
             timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
             screenshot_name = f"{test_num:06d}_{timestamp}_photo_{sample_type}.png"
-            screenshot_path = os.path.join(sequence_folder, screenshot_name)
+            screenshot_path = os.path.join(SAVED_FOLDER, screenshot_name)
             save_x550_screenshot(base_url, screenshot_path)
 
         log_button_click("Combo Test 3 Complete", is_button=False, test_number=f"{test_num:06d}")
