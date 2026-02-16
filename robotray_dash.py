@@ -317,7 +317,7 @@ class TrayConnection:
             self.ser = None
 
     def home(self):
-        self._send("G28 X Y")
+        self._send("G28")
         self._read_response()
 
     def goto(self, x: Optional[float] = None, y: Optional[float] = None, z: Optional[float] = None, f: int = 3000):
@@ -939,17 +939,11 @@ def x550_quick_combo_test_2(_n_clicks, x550_data):
                     timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
                     
                     if "spectra" in mining_result:
-                        shot_num = 1
                         for spec in mining_result["spectra"]:
                             beam_name = spec.get("beamName", "Unknown")
                             spectrum_data = spec.get("data", [])
                             energy_offset = spec.get("energyOffset", 0)
                             energy_slope = spec.get("energySlope", 1)
-                            livetime = spec.get("liveTime", "N/A")
-                            livetimemultiplier = spec.get("liveTimeMultiplier", "N/A")
-                            
-                            print(f"[COMBO TEST 2] Mining Shot {shot_num}: liveTime={livetime}, liveTimeMultiplier={livetimemultiplier}")
-                            shot_num += 1
                             
                             csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}.csv"
                             csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
@@ -1013,17 +1007,11 @@ def x550_quick_combo_test_2(_n_clicks, x550_data):
                     timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
                     
                     if "spectra" in soil_result:
-                        shot_num = 1
                         for spec in soil_result["spectra"]:
                             beam_name = spec.get("beamName", "Unknown")
                             spectrum_data = spec.get("data", [])
                             energy_offset = spec.get("energyOffset", 0)
                             energy_slope = spec.get("energySlope", 1)
-                            livetime = spec.get("liveTime", "N/A")
-                            livetimemultiplier = spec.get("liveTimeMultiplier", "N/A")
-                            
-                            print(f"[COMBO TEST 2] Soil Shot {shot_num}: liveTime={livetime}, liveTimeMultiplier={livetimemultiplier}")
-                            shot_num += 1
                             
                             csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}.csv"
                             csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
@@ -1072,10 +1060,7 @@ def x550_quick_combo_test_2(_n_clicks, x550_data):
     # Save chemistry data to CSV
     if chemistry_rows and SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
         try:
-            # Create timestamp for chemistry filename
-            chem_now = datetime.datetime.now()
-            chem_timestamp = chem_now.strftime("%Y_%m_%d_%H%M%S") + f"{int(chem_now.microsecond / 10000):02d}"
-            chemistry_csv = os.path.join(SAVED_FOLDER, f"{test_num:06d}_{chem_timestamp}_chemistry.csv")
+            chemistry_csv = os.path.join(SAVED_FOLDER, f"{test_num:06d}_chemistry.csv")
             
             # Atomic number to element symbol mapping
             ELEMENT_SYMBOLS = {
@@ -1166,297 +1151,6 @@ def x550_quick_combo_test_2(_n_clicks, x550_data):
             traceback.print_exc()
     
     return f"[OK] Combo Test 2 completed - {test_num:06d}: " + ", ".join(results)
-
-
-@app.callback(
-    Output("x550-quick-combo-test-3-status", "children"),
-    Input("btn-x550-quick-combo-test-3", "n_clicks"),
-    State("store-x550", "data"),
-    prevent_initial_call=True,
-)
-def x550_quick_combo_test_3(_n_clicks, x550_data):
-    """Combined test with CPS conversion: 1 Mining test then 1 Soil test - both use same test number"""
-    if not x550_data or not x550_data.get("x550_connected"):
-        log_button_click("Combo Test 3")
-        return "[ERROR] X550 not connected"
-    
-    base_url = x550_data.get("x550_url")
-    if not base_url:
-        log_button_click("Combo Test 3")
-        return "[ERROR] Missing base URL"
-    
-    # Get test number once for the entire combo
-    test_num = get_next_test_number()
-    log_button_click("Combo Test 3", test_number=f"{test_num:06d}")
-    
-    results = []
-    chemistry_rows = []
-    
-    # Execute Mining test first
-    try:
-        app_mode = "Mining"
-        test_url = f"{base_url}/api/v2/test/final"
-        
-        print(f"[COMBO TEST 3] Running Mining test - {test_num:06d}")
-        test_r = requests.post(test_url, params={"mode": app_mode}, json={}, timeout=60)
-        
-        if test_r.ok:
-            try:
-                mining_result = test_r.json()
-                
-                # Save Mining spectra with CPS conversion
-                if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
-                    now = datetime.datetime.now()
-                    timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
-                    
-                    if "spectra" in mining_result:
-                        shot_num = 1
-                        for spec in mining_result["spectra"]:
-                            beam_name = spec.get("beamName", "Unknown")
-                            spectrum_data = spec.get("data", [])
-                            energy_offset = spec.get("energyOffset", 0)
-                            energy_slope = spec.get("energySlope", 1)
-                            livetime = spec.get("liveTime", "N/A")
-                            livetimemultiplier = spec.get("liveTimeMultiplier", "N/A")
-                            
-                            print(f"[COMBO TEST 3] Mining Shot {shot_num}: liveTime={livetime}, liveTimeMultiplier={livetimemultiplier}")
-                            
-                            # Calculate CPS conversion
-                            total_count = sum(spectrum_data) if spectrum_data else 0
-                            cps_conversion = 1.0
-                            if isinstance(livetime, (int, float)) and isinstance(livetimemultiplier, (int, float)) and livetime > 0:
-                                cps_conversion = (livetimemultiplier / livetime)
-                                corrected_counts = total_count * livetimemultiplier / livetime
-                                print(f"[COMBO TEST 3] Mining Shot {shot_num}: Total counts={total_count}, Corrected CPS={corrected_counts:.2f}")
-                            
-                            shot_num += 1
-                            
-                            csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_CPS.csv"
-                            csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
-                            
-                            with open(csv_filepath, 'w') as f:
-                                f.write("Energy (keV),Intensity (CPS)\n")
-                                for bin_idx, intensity in enumerate(spectrum_data):
-                                    energy = energy_offset + (bin_idx * energy_slope)
-                                    intensity_cps = intensity * cps_conversion
-                                    f.write(f"{energy},{intensity_cps}\n")
-                    
-                    # Extract chemistry data for Mining
-                    if "testData" in mining_result and "chemistry" in mining_result["testData"]:
-                        chem = mining_result["testData"]["chemistry"]
-                        test_data = mining_result["testData"]
-                        date_str = now.strftime("%Y-%m-%d %H:%M:%S")
-                        serial = mining_result.get("serialNumber", "X550-Unknown")
-                        chemistry_rows.append({
-                            "Date": date_str,
-                            "Test #": test_num,
-                            "Serial #": serial,
-                            "Mode": "Mining",
-                            "Grade1": test_data.get("firstGradeMatch", ""),
-                            "Grade2": test_data.get("secondGradeMatch", ""),
-                            "Grade3": test_data.get("thirdGradeMatch", ""),
-                            "chemistry": chem
-                        })
-                        print(f"[COMBO TEST 3] Mining chemistry extracted: {len(chem)} elements")
-                        if len(chem) > 0:
-                            print(f"[COMBO TEST 3] First element sample: {chem[0]}")
-                    else:
-                        print(f"[COMBO TEST 3] WARNING: No chemistry in Mining result. Keys: {mining_result.keys()}")
-                        if "testData" in mining_result:
-                            print(f"[COMBO TEST 3] testData keys: {mining_result['testData'].keys()}")
-                
-                results.append(f"Mining: OK")
-                print(f"[COMBO TEST 3] Mining test completed - {test_num:06d}")
-            except Exception as e:
-                print(f"[COMBO TEST 3] Mining test error: {e}")
-                results.append("Mining: failed")
-        else:
-            results.append("Mining: failed")
-    except Exception as e:
-        print(f"[COMBO TEST 3] Mining test error: {e}")
-        results.append("Mining: failed")
-    
-    # Execute Soil test second (same test number)
-    try:
-        app_mode = "Soil"
-        test_url = f"{base_url}/api/v2/test/final"
-        
-        print(f"[COMBO TEST 3] Running Soil test - {test_num:06d}")
-        test_r = requests.post(test_url, params={"mode": app_mode}, json={}, timeout=60)
-        
-        if test_r.ok:
-            try:
-                soil_result = test_r.json()
-                
-                # Save Soil spectra with CPS conversion (same test number, new timestamp)
-                if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
-                    now = datetime.datetime.now()
-                    timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
-                    
-                    if "spectra" in soil_result:
-                        shot_num = 1
-                        for spec in soil_result["spectra"]:
-                            beam_name = spec.get("beamName", "Unknown")
-                            spectrum_data = spec.get("data", [])
-                            energy_offset = spec.get("energyOffset", 0)
-                            energy_slope = spec.get("energySlope", 1)
-                            livetime = spec.get("liveTime", "N/A")
-                            livetimemultiplier = spec.get("liveTimeMultiplier", "N/A")
-                            
-                            print(f"[COMBO TEST 3] Soil Shot {shot_num}: liveTime={livetime}, liveTimeMultiplier={livetimemultiplier}")
-                            
-                            # Calculate CPS conversion
-                            total_count = sum(spectrum_data) if spectrum_data else 0
-                            cps_conversion = 1.0
-                            if isinstance(livetime, (int, float)) and isinstance(livetimemultiplier, (int, float)) and livetime > 0:
-                                cps_conversion = (livetimemultiplier / livetime)
-                                corrected_counts = total_count * livetimemultiplier / livetime
-                                print(f"[COMBO TEST 3] Soil Shot {shot_num}: Total counts={total_count}, Corrected CPS={corrected_counts:.2f}")
-                            
-                            shot_num += 1
-                            
-                            csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_CPS.csv"
-                            csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
-                            
-                            with open(csv_filepath, 'w') as f:
-                                f.write("Energy (keV),Intensity (CPS)\n")
-                                for bin_idx, intensity in enumerate(spectrum_data):
-                                    energy = energy_offset + (bin_idx * energy_slope)
-                                    intensity_cps = intensity * cps_conversion
-                                    f.write(f"{energy},{intensity_cps}\n")
-                    
-                    # Extract chemistry data for Soil
-                    if "testData" in soil_result and "chemistry" in soil_result["testData"]:
-                        chem = soil_result["testData"]["chemistry"]
-                        test_data = soil_result["testData"]
-                        date_str = now.strftime("%Y-%m-%d %H:%M:%S")
-                        serial = soil_result.get("serialNumber", "X550-Unknown")
-                        chemistry_rows.append({
-                            "Date": date_str,
-                            "Test #": test_num,
-                            "Serial #": serial,
-                            "Mode": "Soil",
-                            "Grade1": test_data.get("firstGradeMatch", ""),
-                            "Grade2": test_data.get("secondGradeMatch", ""),
-                            "Grade3": test_data.get("thirdGradeMatch", ""),
-                            "chemistry": chem
-                        })
-                        print(f"[COMBO TEST 3] Soil chemistry extracted: {len(chem)} elements")
-                        if len(chem) > 0:
-                            print(f"[COMBO TEST 3] First element sample: {chem[0]}")
-                    else:
-                        print(f"[COMBO TEST 3] WARNING: No chemistry in Soil result. Keys: {soil_result.keys()}")
-                        if "testData" in soil_result:
-                            print(f"[COMBO TEST 3] testData keys: {soil_result['testData'].keys()}")
-                
-                results.append(f"Soil: OK")
-                print(f"[COMBO TEST 3] Soil test completed - {test_num:06d}")
-            except Exception as e:
-                print(f"[COMBO TEST 3] Soil test error: {e}")
-                results.append("Soil: failed")
-        else:
-            results.append("Soil: failed")
-    except Exception as e:
-        print(f"[COMBO TEST 3] Soil test error: {e}")
-        results.append("Soil: failed")
-    
-    # Save chemistry data to CSV (same as combo test 2)
-    if chemistry_rows and SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
-        try:
-            # Create timestamp for chemistry filename
-            chem_now = datetime.datetime.now()
-            chem_timestamp = chem_now.strftime("%Y_%m_%d_%H%M%S") + f"{int(chem_now.microsecond / 10000):02d}"
-            chemistry_csv = os.path.join(SAVED_FOLDER, f"{test_num:06d}_{chem_timestamp}_chemistry.csv")
-            
-            # Atomic number to element symbol mapping
-            ELEMENT_SYMBOLS = {
-                1: "H", 2: "He", 3: "Li", 4: "Be", 5: "B", 6: "C", 7: "N", 8: "O", 9: "F", 10: "Ne",
-                11: "Na", 12: "Mg", 13: "Al", 14: "Si", 15: "P", 16: "S", 17: "Cl", 18: "Ar", 19: "K", 20: "Ca",
-                21: "Sc", 22: "Ti", 23: "V", 24: "Cr", 25: "Mn", 26: "Fe", 27: "Co", 28: "Ni", 29: "Cu", 30: "Zn",
-                31: "Ga", 32: "Ge", 33: "As", 34: "Se", 35: "Br", 36: "Kr", 37: "Rb", 38: "Sr", 39: "Y", 40: "Zr",
-                41: "Nb", 42: "Mo", 43: "Tc", 44: "Ru", 45: "Rh", 46: "Pd", 47: "Ag", 48: "Cd", 49: "In", 50: "Sn",
-                51: "Sb", 52: "Te", 53: "I", 54: "Xe", 55: "Cs", 56: "Ba", 57: "La", 58: "Ce", 59: "Pr", 60: "Nd",
-                61: "Pm", 62: "Sm", 63: "Eu", 64: "Gd", 65: "Tb", 66: "Dy", 67: "Ho", 68: "Er", 69: "Tm", 70: "Yb",
-                71: "Lu", 72: "Hf", 73: "Ta", 74: "W", 75: "Re", 76: "Os", 77: "Ir", 78: "Pt", 79: "Au", 80: "Hg",
-                81: "Tl", 82: "Pb", 83: "Bi", 84: "Po", 85: "At", 86: "Rn", 87: "Fr", 88: "Ra", 89: "Ac", 90: "Th",
-                91: "Pa", 92: "U", 93: "Np", 94: "Pu", 95: "Am", 96: "Cm", 97: "Bk", 98: "Cf", 99: "Es", 100: "Fm"
-            }
-            
-            # Build CSV with all elements
-            import csv
-            with open(chemistry_csv, 'w', newline='') as f:
-                writer = csv.writer(f)
-                
-                # Write header
-                header = ["Date", "Test #", "Serial #", "Grade Match #1", "Grade Match #2", "Grade Match #3", "Mode", "AVG Flag"]
-                
-                # Get all element atomic numbers from both tests
-                all_atomic_numbers = set()
-                for row in chemistry_rows:
-                    if "chemistry" in row:
-                        for elem_data in row["chemistry"]:
-                            all_atomic_numbers.add(elem_data.get("atomicNumber", 0))
-                
-                # Sort by atomic number and add element columns
-                sorted_atomic_numbers = sorted(all_atomic_numbers)
-                for atomic_num in sorted_atomic_numbers:
-                    elem_symbol = ELEMENT_SYMBOLS.get(atomic_num, f"Z{atomic_num}")
-                    header.extend([elem_symbol, f"{elem_symbol} +/-"])
-                
-                writer.writerow(header)
-                
-                # Write data rows
-                for row in chemistry_rows:
-                    data_row = [
-                        row["Date"],
-                        row["Test #"],
-                        row["Serial #"],
-                        row.get("Grade1", ""),
-                        row.get("Grade2", ""),
-                        row.get("Grade3", ""),
-                        row["Mode"],
-                        ""  # AVG Flag
-                    ]
-                    
-                    # Create dict of element values keyed by atomic number
-                    elem_values = {}
-                    if "chemistry" in row:
-                        for elem_data in row["chemistry"]:
-                            atomic_num = elem_data.get("atomicNumber", 0)
-                            percent = elem_data.get("percent", "")
-                            uncertainty = elem_data.get("uncertainty", "")
-                            flags = elem_data.get("flags", 0)
-                            
-                            # Format value with flags (ND for below detection, etc.)
-                            value_str = ""
-                            error_str = ""
-                            
-                            # Check if below LOD (Less than Limit of Detection)
-                            if flags & 8:  # TYPE_LESS_LOD
-                                value_str = "ND"
-                                error_str = f"< {percent:.2f}" if isinstance(percent, (int, float)) else ""
-                            elif isinstance(percent, (int, float)) and isinstance(uncertainty, (int, float)):
-                                value_str = f"{percent:.2f}"
-                                error_str = f"{uncertainty:.2f}"
-                            
-                            elem_values[atomic_num] = (value_str, error_str)
-                    
-                    # Add element values in order
-                    for atomic_num in sorted_atomic_numbers:
-                        if atomic_num in elem_values:
-                            data_row.extend([elem_values[atomic_num][0], elem_values[atomic_num][1]])
-                        else:
-                            data_row.extend(["", ""])
-                    
-                    writer.writerow(data_row)
-            
-            print(f"[COMBO TEST 3] Chemistry data saved to {chemistry_csv}")
-        except Exception as e:
-            print(f"[COMBO TEST 3] Error saving chemistry data: {e}")
-            import traceback
-            traceback.print_exc()
-    
-    return f"[OK] Combo Test 3 completed - {test_num:06d}: " + ", ".join(results)
 
 
 @app.callback(
@@ -1576,7 +1270,7 @@ def x550_quick_combo_test(_n_clicks, x550_data):
     if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
         now = datetime.datetime.now()
         timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
-        screenshot_name = f"{test_num:06d}_{timestamp}_photo.png"
+        screenshot_name = f"{test_num:06d}_{timestamp}_Combo.png"
         screenshot_path = os.path.join(SAVED_FOLDER, screenshot_name)
         save_x550_screenshot(base_url, screenshot_path)
     
@@ -1685,7 +1379,7 @@ def start_x550_combo_sequence(_n_clicks, combo_count, x550_data):
                                     energy = energy_offset + (bin_idx * energy_slope)
                                     f.write(f"{energy},{intensity}\n")
 
-                    screenshot_name = f"{test_num:06d}_{timestamp}_photo.png"
+                    screenshot_name = f"{test_num:06d}_{timestamp}_Combo.png"
                     screenshot_path = os.path.join(SAVED_FOLDER, screenshot_name)
                     save_x550_screenshot(base_url, screenshot_path)
 
@@ -1868,7 +1562,7 @@ def start_x550_combo_sequence_2(_n_clicks, combo_count, x550_data):
                                     energy = energy_offset + (bin_idx * energy_slope)
                                     f.write(f"{energy},{intensity}\n")
 
-                    screenshot_name = f"{test_num:06d}_{timestamp}_photo.png"
+                    screenshot_name = f"{test_num:06d}_{timestamp}_Combo.png"
                     screenshot_path = os.path.join(SAVED_FOLDER, screenshot_name)
                     save_x550_screenshot(base_url, screenshot_path)
 
@@ -1941,375 +1635,6 @@ def start_x550_combo_sequence_2(_n_clicks, combo_count, x550_data):
 
 
 @app.callback(
-    Output("sample-other-text", "style"),
-    Output("store-sample-type", "data"),
-    Input("sample-type-dropdown", "value"),
-    State("sample-other-text", "value"),
-    prevent_initial_call=False,
-)
-def update_sample_type(selected_sample, custom_text):
-    """Update sample type and show/hide custom text input"""
-    # Show text input only if "other" is selected
-    text_style = {"marginTop": "10px"} if selected_sample == "other" else {"display": "none", "marginTop": "10px"}
-    
-    # Store the actual sample value
-    store_value = custom_text if selected_sample == "other" and custom_text else selected_sample
-    
-    return text_style, store_value
-
-
-@app.callback(
-    Output("x550-combo-sequence-store", "data", allow_duplicate=True),
-    Output("x550-combo-sequence-status", "children", allow_duplicate=True),
-    Output("x550-combo-sequence-current-status", "children", allow_duplicate=True),
-    Input("btn-x550-start-combo-sequence-3", "n_clicks"),
-    State("x550-combo-count", "value"),
-    State("store-x550", "data"),
-    State("store-sample-type", "data"),
-    prevent_initial_call=True,
-)
-def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
-    """Start combo sequence 3: Run Combo Test 3 (CPS) with Forward button in between, reset sequence row"""
-    import os
-    import datetime
-    import requests
-    import csv
-    global TRAY_SEQUENCE_ROW, FIRST_CUP_X, FIRST_CUP_Y
-    
-    # Check if sample type is specified
-    if not sample_type or sample_type == "not specified":
-        return None, "[ERROR] Please specify a sample type before starting", ""
-    
-    # Reset tray sequence to start
-    TRAY_SEQUENCE_ROW = 2
-    print(f"[COMBO SEQUENCE 3] Reset tray sequence to row {TRAY_SEQUENCE_ROW}")
-    
-    if not x550_data or not x550_data.get("x550_connected"):
-        return None, "[ERROR] X550 not connected", ""
-    
-    base_url = x550_data.get("x550_url")
-    if not base_url:
-        return None, "[ERROR] Missing base URL", ""
-    
-    if not combo_count or combo_count < 1:
-        return None, "[ERROR] Invalid count", ""
-    
-    # Move to first cup position before starting combo sequence
-    if _TRAY_INSTANCE and _TRAY_INSTANCE.is_connected():
-        try:
-            _TRAY_INSTANCE.goto(x=FIRST_CUP_X, y=FIRST_CUP_Y, z=0)
-            print(f"[COMBO SEQUENCE 3] Moved to first cup (X={FIRST_CUP_X}, Y={FIRST_CUP_Y})")
-            # Wait for tray to settle before starting tests
-            time.sleep(3)
-            print("[COMBO SEQUENCE 3] Tray settled, starting tests")
-        except Exception as e:
-            print(f"[COMBO SEQUENCE 3] Warning: Could not move to first cup: {e}")
-
-    first_num = None
-    last_num = None
-    results = []
-    current_status = ""
-    test_subfolder = None  # Will be created after we get first test number
-
-    for i in range(combo_count):
-        test_num = get_next_test_number()
-        if first_num is None:
-            first_num = test_num
-            # Create subfolder with naming convention: {test_num}_{date}_{sample}_{count}
-            if SAVED_FOLDER:
-                now = datetime.datetime.now()
-                date_str = now.strftime("%Y_%m_%d")
-                subfolder_name = f"{test_num:06d}_{date_str}_{sample_type}_{combo_count}"
-                test_subfolder = os.path.join(SAVED_FOLDER, subfolder_name)
-                try:
-                    os.makedirs(test_subfolder, exist_ok=True)
-                    print(f"[COMBO SEQUENCE 3] Created subfolder: {test_subfolder}")
-                except Exception as e:
-                    print(f"[COMBO SEQUENCE 3] Warning: Could not create subfolder: {e}")
-                    test_subfolder = SAVED_FOLDER  # Fallback to main folder
-        last_num = test_num
-
-        log_button_click("Combo Test 3", test_number=f"{test_num:06d}")
-        chemistry_rows = []
-
-        # Debug: Log subfolder status
-        print(f"[COMBO SEQUENCE 3] DEBUG: test_subfolder = {test_subfolder}, exists = {os.path.exists(test_subfolder) if test_subfolder else False}")
-
-        # Mining
-        try:
-            app_mode = "Mining"
-            test_url = f"{base_url}/api/v2/test/final"
-            print(f"[COMBO SEQUENCE 3] Running Mining test - {test_num:06d}")
-            test_r = requests.post(test_url, params={"mode": app_mode}, json={}, timeout=60)
-
-            if test_r.ok:
-                mining_result = test_r.json()
-                num_spectra = len(mining_result.get("spectra", []))
-                print(f"[COMBO SEQUENCE 3] Mining test received {num_spectra} spectra")
-
-                if test_subfolder and os.path.exists(test_subfolder):
-                    now = datetime.datetime.now()
-                    timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
-                    
-                    if "spectra" in mining_result:
-                        shot_num = 1
-                        for spec in mining_result["spectra"]:
-                            beam_name = spec.get("beamName", "Unknown")
-                            spectrum_data = spec.get("data", [])
-                            energy_offset = spec.get("energyOffset", 0)
-                            energy_slope = spec.get("energySlope", 1)
-                            livetime = spec.get("liveTime", "N/A")
-                            livetimemultiplier = spec.get("liveTimeMultiplier", "N/A")
-                            
-                            # Calculate CPS conversion
-                            total_count = sum(spectrum_data) if spectrum_data else 0
-                            cps_conversion = 1.0
-                            if isinstance(livetime, (int, float)) and isinstance(livetimemultiplier, (int, float)) and livetime > 0:
-                                cps_conversion = (livetimemultiplier / livetime)
-                                corrected_counts = total_count * livetimemultiplier / livetime
-                                print(f"[COMBO SEQUENCE 3] Mining Shot {shot_num}: Total counts={total_count}, Corrected CPS={corrected_counts:.2f}")
-                            
-                            shot_num += 1
-
-                            csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_{sample_type}.csv"
-                            csv_filepath = os.path.join(test_subfolder, csv_filename)
-
-                            with open(csv_filepath, 'w') as f:
-                                f.write("Energy (keV),Intensity (CPS)\n")
-                                for bin_idx, intensity in enumerate(spectrum_data):
-                                    energy = energy_offset + (bin_idx * energy_slope)
-                                    intensity_cps = intensity * cps_conversion
-                                    f.write(f"{energy},{intensity_cps}\n")
-                    
-                    # Extract chemistry data for Mining
-                    if "testData" in mining_result and "chemistry" in mining_result["testData"]:
-                        chem = mining_result["testData"]["chemistry"]
-                        test_data = mining_result["testData"]
-                        date_str = now.strftime("%Y-%m-%d %H:%M:%S")
-                        serial = mining_result.get("serialNumber", "X550-Unknown")
-                        chemistry_rows.append({
-                            "Date": date_str,
-                            "Test #": test_num,
-                            "Serial #": serial,
-                            "Mode": "Mining",
-                            "Grade1": test_data.get("firstGradeMatch", ""),
-                            "Grade2": test_data.get("secondGradeMatch", ""),
-                            "Grade3": test_data.get("thirdGradeMatch", ""),
-                            "chemistry": chem
-                        })
-
-                results.append(f"Mining: OK ({num_spectra} beams)")
-            else:
-                print(f"[COMBO SEQUENCE 3] Mining test failed with status {test_r.status_code}")
-                results.append(f"Mining: failed ({test_r.status_code})")
-        except requests.Timeout:
-            print(f"[COMBO SEQUENCE 3] Mining test timeout")
-            results.append("Mining: timeout")
-        except Exception as e:
-            print(f"[COMBO SEQUENCE 3] Mining test error: {e}")
-            results.append(f"Mining: error ({str(e)[:50]})")
-
-        # Soil
-        try:
-            app_mode = "Soil"
-            test_url = f"{base_url}/api/v2/test/final"
-            print(f"[COMBO SEQUENCE 3] Running Soil test - {test_num:06d}")
-            test_r = requests.post(test_url, params={"mode": app_mode}, json={}, timeout=60)
-
-            if test_r.ok:
-                soil_result = test_r.json()
-                num_spectra = len(soil_result.get("spectra", []))
-                print(f"[COMBO SEQUENCE 3] Soil test received {num_spectra} spectra")
-
-                # Use test_subfolder if available, otherwise fallback to SAVED_FOLDER
-                soil_save_folder = None
-                if test_subfolder and os.path.exists(test_subfolder):
-                    soil_save_folder = test_subfolder
-                    print(f"[COMBO SEQUENCE 3] Saving Soil spectra to subfolder: {test_subfolder}")
-                elif SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
-                    soil_save_folder = SAVED_FOLDER
-                    print(f"[COMBO SEQUENCE 3] WARNING: test_subfolder unavailable, saving Soil spectra to SAVED_FOLDER: {SAVED_FOLDER}")
-                
-                if soil_save_folder:
-                    now = datetime.datetime.now()
-                    timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
-                    
-                    if "spectra" in soil_result:
-                        shot_num = 1
-                        for spec in soil_result["spectra"]:
-                            beam_name = spec.get("beamName", "Unknown")
-                            spectrum_data = spec.get("data", [])
-                            energy_offset = spec.get("energyOffset", 0)
-                            energy_slope = spec.get("energySlope", 1)
-                            livetime = spec.get("liveTime", "N/A")
-                            livetimemultiplier = spec.get("liveTimeMultiplier", "N/A")
-                            
-                            # Calculate CPS conversion
-                            total_count = sum(spectrum_data) if spectrum_data else 0
-                            cps_conversion = 1.0
-                            if isinstance(livetime, (int, float)) and isinstance(livetimemultiplier, (int, float)) and livetime > 0:
-                                cps_conversion = (livetimemultiplier / livetime)
-                                corrected_counts = total_count * livetimemultiplier / livetime
-                                print(f"[COMBO SEQUENCE 3] Soil Shot {shot_num}: Total counts={total_count}, Corrected CPS={corrected_counts:.2f}")
-                            
-                            shot_num += 1
-
-                            csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_{sample_type}.csv"
-                            csv_filepath = os.path.join(soil_save_folder, csv_filename)
-
-                            with open(csv_filepath, 'w') as f:
-                                f.write("Energy (keV),Intensity (CPS)\n")
-                                for bin_idx, intensity in enumerate(spectrum_data):
-                                    energy = energy_offset + (bin_idx * energy_slope)
-                                    intensity_cps = intensity * cps_conversion
-                                    f.write(f"{energy},{intensity_cps}\n")
-                    
-                    # Extract chemistry data for Soil
-                    if "testData" in soil_result and "chemistry" in soil_result["testData"]:
-                        chem = soil_result["testData"]["chemistry"]
-                        test_data = soil_result["testData"]
-                        date_str = now.strftime("%Y-%m-%d %H:%M:%S")
-                        serial = soil_result.get("serialNumber", "X550-Unknown")
-                        chemistry_rows.append({
-                            "Date": date_str,
-                            "Test #": test_num,
-                            "Serial #": serial,
-                            "Mode": "Soil",
-                            "Grade1": test_data.get("firstGradeMatch", ""),
-                            "Grade2": test_data.get("secondGradeMatch", ""),
-                            "Grade3": test_data.get("thirdGradeMatch", ""),
-                            "chemistry": chem
-                        })
-
-                results.append(f"Soil: OK ({num_spectra} beams)")
-            else:
-                print(f"[COMBO SEQUENCE 3] Soil test failed with status {test_r.status_code}")
-                results.append(f"Soil: failed ({test_r.status_code})")
-        except requests.Timeout:
-            print(f"[COMBO SEQUENCE 3] Soil test timeout")
-            results.append("Soil: timeout")
-        except Exception as e:
-            print(f"[COMBO SEQUENCE 3] Soil test error: {e}")
-            results.append(f"Soil: error ({str(e)[:50]})")
-
-        # Save chemistry data to CSV for this test
-        if chemistry_rows and test_subfolder and os.path.exists(test_subfolder):
-            try:
-                chem_now = datetime.datetime.now()
-                chem_timestamp = chem_now.strftime("%Y_%m_%d_%H%M%S") + f"{int(chem_now.microsecond / 10000):02d}"
-                chemistry_csv = os.path.join(test_subfolder, f"{test_num:06d}_{chem_timestamp}_chemistry_{sample_type}.csv")
-                
-                ELEMENT_SYMBOLS = {
-                    1: "H", 2: "He", 3: "Li", 4: "Be", 5: "B", 6: "C", 7: "N", 8: "O", 9: "F", 10: "Ne",
-                    11: "Na", 12: "Mg", 13: "Al", 14: "Si", 15: "P", 16: "S", 17: "Cl", 18: "Ar", 19: "K", 20: "Ca",
-                    21: "Sc", 22: "Ti", 23: "V", 24: "Cr", 25: "Mn", 26: "Fe", 27: "Co", 28: "Ni", 29: "Cu", 30: "Zn",
-                    31: "Ga", 32: "Ge", 33: "As", 34: "Se", 35: "Br", 36: "Kr", 37: "Rb", 38: "Sr", 39: "Y", 40: "Zr",
-                    41: "Nb", 42: "Mo", 43: "Tc", 44: "Ru", 45: "Rh", 46: "Pd", 47: "Ag", 48: "Cd", 49: "In", 50: "Sn",
-                    51: "Sb", 52: "Te", 53: "I", 54: "Xe", 55: "Cs", 56: "Ba", 57: "La", 58: "Ce", 59: "Pr", 60: "Nd",
-                    61: "Pm", 62: "Sm", 63: "Eu", 64: "Gd", 65: "Tb", 66: "Dy", 67: "Ho", 68: "Er", 69: "Tm", 70: "Yb",
-                    71: "Lu", 72: "Hf", 73: "Ta", 74: "W", 75: "Re", 76: "Os", 77: "Ir", 78: "Pt", 79: "Au", 80: "Hg",
-                    81: "Tl", 82: "Pb", 83: "Bi", 84: "Po", 85: "At", 86: "Rn", 87: "Fr", 88: "Ra", 89: "Ac", 90: "Th",
-                    91: "Pa", 92: "U", 93: "Np", 94: "Pu", 95: "Am", 96: "Cm", 97: "Bk", 98: "Cf", 99: "Es", 100: "Fm"
-                }
-                
-                with open(chemistry_csv, 'w', newline='') as f:
-                    writer = csv.writer(f)
-                    header = ["Date", "Test #", "Serial #", "Grade Match #1", "Grade Match #2", "Grade Match #3", "Mode", "AVG Flag"]
-                    all_atomic_numbers = set()
-                    for row in chemistry_rows:
-                        if "chemistry" in row:
-                            for elem_data in row["chemistry"]:
-                                all_atomic_numbers.add(elem_data.get("atomicNumber", 0))
-                    sorted_atomic_numbers = sorted(all_atomic_numbers)
-                    for atomic_num in sorted_atomic_numbers:
-                        elem_symbol = ELEMENT_SYMBOLS.get(atomic_num, f"Z{atomic_num}")
-                        header.extend([elem_symbol, f"{elem_symbol} +/-"])
-                    writer.writerow(header)
-                    for row in chemistry_rows:
-                        data_row = [row["Date"], row["Test #"], row["Serial #"], row.get("Grade1", ""), row.get("Grade2", ""), row.get("Grade3", ""), row["Mode"], ""]
-                        elem_values = {}
-                        if "chemistry" in row:
-                            for elem_data in row["chemistry"]:
-                                atomic_num = elem_data.get("atomicNumber", 0)
-                                percent = elem_data.get("percent", "")
-                                uncertainty = elem_data.get("uncertainty", "")
-                                flags = elem_data.get("flags", 0)
-                                value_str = ""
-                                error_str = ""
-                                if flags & 8:
-                                    value_str = "ND"
-                                    error_str = f"< {percent:.2f}" if isinstance(percent, (int, float)) else ""
-                                elif isinstance(percent, (int, float)) and isinstance(uncertainty, (int, float)):
-                                    value_str = f"{percent:.2f}"
-                                    error_str = f"{uncertainty:.2f}"
-                                elem_values[atomic_num] = (value_str, error_str)
-                        for atomic_num in sorted_atomic_numbers:
-                            if atomic_num in elem_values:
-                                data_row.extend([elem_values[atomic_num][0], elem_values[atomic_num][1]])
-                            else:
-                                data_row.extend(["", ""])
-                        writer.writerow(data_row)
-                print(f"[COMBO SEQUENCE 3] Chemistry data saved to {chemistry_csv}")
-            except Exception as e:
-                print(f"[COMBO SEQUENCE 3] Error saving chemistry data: {e}")
-
-        # Save single screenshot after both tests complete
-        if test_subfolder and os.path.exists(test_subfolder):
-            now = datetime.datetime.now()
-            timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
-            screenshot_name = f"{test_num:06d}_{timestamp}_photo_{sample_type}.png"
-            screenshot_path = os.path.join(test_subfolder, screenshot_name)
-            save_x550_screenshot(base_url, screenshot_path)
-
-        log_button_click("Combo Test 3 Complete", is_button=False, test_number=f"{test_num:06d}")
-
-        # After each test (except last), execute Forward button
-        if i < combo_count - 1:
-            try:
-                print(f"[COMBO SEQUENCE 3] Executing Forward button")
-                if not _TRAY_INSTANCE or not _TRAY_INSTANCE.is_connected():
-                    current_status = "[WARN] Tray not connected - Forward skipped"
-                    print("[COMBO SEQUENCE 3] Tray not connected - Forward skipped")
-                else:
-                    seq_file = os.path.join(os.path.dirname(__file__), 'tray_sequence.txt')
-                    if os.path.exists(seq_file):
-                        with open(seq_file, 'r') as f:
-                            lines = f.readlines()
-                        if TRAY_SEQUENCE_ROW < len(lines):
-                            row_data = lines[TRAY_SEQUENCE_ROW].strip().split('\t')
-                            if len(row_data) >= 2:
-                                try:
-                                    x_delta = float(row_data[0])
-                                    y_delta = float(row_data[1])
-                                    _TRAY_INSTANCE._send("G91")
-                                    if x_delta != 0 or y_delta != 0:
-                                        _TRAY_INSTANCE._send(f"G0 X{x_delta} Y{y_delta} F3000")
-                                    _TRAY_INSTANCE._send("G90")
-                                    TRAY_SEQUENCE_ROW += 1
-                                    current_status = f"Forward: X{x_delta:+.2f} Y{y_delta:+.2f} (Row {TRAY_SEQUENCE_ROW})"
-                                    print(f"[COMBO SEQUENCE 3] Forward executed: X{x_delta:+.2f} Y{y_delta:+.2f}")
-                                except ValueError as ve:
-                                    current_status = f"[WARN] Forward parse error: {ve}"
-                                    print(f"[COMBO SEQUENCE 3] Could not parse coordinates: {ve}")
-                            else:
-                                current_status = f"[WARN] Invalid row format at row {TRAY_SEQUENCE_ROW}"
-                        else:
-                            current_status = f"[WARN] Reached end of sequence (row {TRAY_SEQUENCE_ROW})"
-                            print(f"[COMBO SEQUENCE 3] Reached end of sequence")
-                    else:
-                        current_status = "[WARN] tray_sequence.txt not found"
-                        print(f"[COMBO SEQUENCE 3] tray_sequence.txt not found")
-            except Exception as e:
-                current_status = f"[WARN] Forward error: {e}"
-                print(f"[COMBO SEQUENCE 3] Error executing Forward: {e}")
-
-    if first_num is not None and last_num is not None:
-        log_button_click(f"Combo Sequence 3 Complete: {first_num:06d} to {last_num:06d}", is_button=False, total_tests=combo_count)
-
-    return None, f"[OK] Combo sequence 3 complete ({combo_count} tests)", current_status
-
-
-@app.callback(
     Output("x550-live-status", "children"),
     Input("x550-status-poll", "n_intervals"),
 )
@@ -2371,21 +1696,6 @@ def x550_calibrate(_n_clicks, x550_data):
     base_url = x550_data.get("x550_url")
     if not base_url:
         return "[ERROR] Missing base URL", None, True
-    
-    # First, move tray to position calibration location
-    try:
-        if _TRAY_INSTANCE and _TRAY_INSTANCE.is_connected():
-            _TRAY_INSTANCE._send("G28 X Y")
-            _TRAY_INSTANCE._read_response()
-            _TRAY_INSTANCE.goto(x=173.0, y=58.0, z=0.0)
-            print("[CALIBRATE] Tray moved to calibration position")
-            # Wait for tray to settle before starting calibration
-            time.sleep(5)
-            print("[CALIBRATE] Tray settled, proceeding with calibration")
-        else:
-            print("[CALIBRATE] Warning: Tray not connected, skipping position move")
-    except Exception as e:
-        print(f"[CALIBRATE] Warning: Could not move tray to position: {e}")
     
     try:
         # Energy calibration endpoint for X-series XRF analyzers
@@ -2715,8 +2025,8 @@ def tray_checks(n_first, n_last, n_edit, n_save, n_xp, n_xm, n_yp, n_ym, n_zp, n
         return f"↓ Moved Z-{step}mm", True, False, f"Row: {TRAY_SEQUENCE_ROW}"
     
     if ctx == "btn-home":
-        _TRAY_INSTANCE._send("G28 X Y")
-        return "[OK] Homed X and Y (Z unchanged)", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
+        _TRAY_INSTANCE.home()
+        return "[OK] Homed to origin", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
 
     if ctx == "btn-forward-sequence":
         try:
@@ -2764,10 +2074,8 @@ def tray_checks(n_first, n_last, n_edit, n_save, n_xp, n_xm, n_yp, n_ym, n_zp, n
         return "[OK] Sequence reset to start (row 2)", False, False, f"Row: {TRAY_SEQUENCE_ROW}"
     
     if ctx == "btn-position-tray":
-        _TRAY_INSTANCE._send("G28 X Y")
-        _TRAY_INSTANCE._read_response()
-        _TRAY_INSTANCE.goto(x=173.0, y=58.0, z=0.0)
-        return "[OK] Homed X and Y, then moved to position (X=173.0, Y=58.0, Z=0.0)", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
+        _TRAY_INSTANCE.goto(x=82.5, y=186.5, z=0.0)
+        return "[OK] Moved to position (X=82.5, Y=186.5, Z=0.0)", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
 
     return dash.no_update, dash.no_update, dash.no_update, f"Row: {TRAY_SEQUENCE_ROW}"
 
@@ -2790,7 +2098,7 @@ def update_tray_coordinates(_n_intervals, connection_data, edit_mode):
     
     first_cup = f"X={FIRST_CUP_X:.1f}, Y={FIRST_CUP_Y:.1f}, Z=0"
     last_cup = f"X={LAST_CUP_X:.1f}, Y={LAST_CUP_Y:.1f}, Z=0"
-    home = "X=0, Y=0, Z=unchanged"
+    home = "X=0, Y=0, Z=0"
     
     # Show current position - always try to read it when tray is connected
     if _TRAY_INSTANCE and _TRAY_INSTANCE.is_connected():
@@ -3032,7 +2340,7 @@ if __name__ == "__main__":
                         dbc.Row(
                             [
                                 dbc.Col(
-                                    dbc.Button("Position", id="btn-position-tray", color="info", size="lg", style={"display": "none"}),
+                                    dbc.Button("Position", id="btn-position-tray", color="info", size="lg"),
                                     md="auto",
                                 ),
                                 dbc.Col(
@@ -3048,49 +2356,6 @@ if __name__ == "__main__":
                 ),
                 className="mb-3",
             ),
-            dbc.Card(
-                dbc.CardBody(
-                    [
-                        html.H5("Sample"),
-                        dbc.Row([
-                            dbc.Col([
-                                html.Label("Sample type:", className="small fw-bold"),
-                                dcc.Dropdown(
-                                    id="sample-type-dropdown",
-                                    options=[
-                                        {"label": "Not specified", "value": "not specified"},
-                                        {"label": "Apatite", "value": "apatite"},
-                                        {"label": "Feldspar", "value": "feldspar"},
-                                        {"label": "Garnet", "value": "garnet"},
-                                        {"label": "Monazite (AUS)", "value": "monazite(aus)"},
-                                        {"label": "Monazite (BRA)", "value": "monazite(bra)"},
-                                        {"label": "Nephe", "value": "nephe"},
-                                        {"label": "Quartz", "value": "quartz"},
-                                        {"label": "Rutile", "value": "rutile"},
-                                        {"label": "Tray", "value": "tray"},
-                                        {"label": "Zircon", "value": "zircon"},
-                                        {"label": "Other", "value": "other"},
-                                    ],
-                                    value="not specified",
-                                    clearable=False,
-                                ),
-                            ]),
-                        ]),
-                        dbc.Row([
-                            dbc.Col([
-                                dbc.Input(
-                                    id="sample-other-text",
-                                    type="text",
-                                    placeholder="Specify other sample type",
-                                    style={"display": "none", "marginTop": "10px"}
-                                ),
-                            ]),
-                        ], className="mt-2"),
-                        dcc.Store(id="store-sample-type", data="not specified"),
-                    ]
-                ),
-                className="mb-3",
-            ),
 
             dbc.Card(
                 dbc.CardBody(
@@ -3101,6 +2366,91 @@ if __name__ == "__main__":
                             dbc.Button("Save folder", id="btn-save-folder", color="primary"),
                         ]),
                         html.Div(id="folder-feedback", className="mt-2"),
+                    ]
+                ),
+                className="mb-3",
+            ),
+
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.H5("Quick Test"),
+                        dbc.Row([
+                            dbc.Col([
+                                dbc.Button("1 Mining Test", id="btn-x550-quick-test", color="success", size="lg"),
+                                html.Div(id="x550-quick-test-status", className="text-muted small mt-2"),
+                            ], md=4),
+                            dbc.Col([
+                                dbc.Button("1 Soil Test", id="btn-x550-quick-soil-test", color="info", size="lg"),
+                                html.Div(id="x550-quick-soil-test-status", className="text-muted small mt-2"),
+                            ], md=4),
+                            dbc.Col([
+                                dbc.Button("Combo Test", id="btn-x550-quick-combo-test", color="warning", size="lg"),
+                                html.Div(id="x550-quick-combo-test-status", className="text-muted small mt-2"),
+                            ], md=4),
+                        ]),
+                        dbc.Row([
+                            dbc.Col([
+                                dbc.Button("Combo Test 2", id="btn-x550-quick-combo-test-2", color="success", size="lg"),
+                                html.Div(id="x550-quick-combo-test-2-status", className="text-muted small mt-2"),
+                            ], md=4),
+                        ], className="mt-2"),
+                    ]
+                ),
+                className="mb-3",
+            ),
+
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.H5("Combo Sequence"),
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        html.Label("Count", className="small"),
+                                        dbc.Input(
+                                            id="x550-combo-count",
+                                            type="number",
+                                            min=1,
+                                            step=1,
+                                            value=2,
+                                            placeholder="Count",
+                                        ),
+                                    ],
+                                    md=1,
+                                ),
+                                dbc.Col(
+                                    [
+                                        html.Label("\u00A0", className="small"),
+                                        dbc.Button("Start", id="btn-x550-start-combo-sequence", color="primary"),
+                                    ],
+                                    md="auto",
+                                ),
+                                dbc.Col(
+                                    [
+                                        html.Label("\u00A0", className="small"),
+                                        dbc.Button("Start 2", id="btn-x550-start-combo-sequence-2", color="success"),
+                                    ],
+                                    md="auto",
+                                ),
+                                dbc.Col(
+                                    [
+                                        html.Label("\u00A0", className="small"),
+                                        dbc.Button("Abort", id="btn-x550-abort-combo-sequence", color="danger"),
+                                    ],
+                                    md="auto",
+                                ),
+                            ],
+                            className="g-2",
+                            align="center",
+                        ),
+                        html.Div([
+                            html.Div(id="x550-live-status", className="fw-bold", style={"color": "#0b6bcb"}),
+                            html.H4(id="x550-combo-sequence-current-status", className="mt-3 mb-2", style={"color": "#0066cc"}),
+                            html.H2(id="x550-combo-sequence-countdown", className="mb-2", style={"color": "#ff6600", "fontWeight": "bold"}),
+                        ]),
+                        html.Div(id="x550-combo-sequence-status", className="text-muted small mt-2"),
                     ]
                 ),
                 className="mb-3",
@@ -3134,7 +2484,7 @@ if __name__ == "__main__":
                 dbc.CardBody(
                     [
                         html.H5("X-550 Screenshot"),
-                        dbc.Button("Take Photo", id="btn-take-photo", color="success", size="lg", style={"display": "none"}),
+                        dbc.Button("Take Photo", id="btn-take-photo", color="success", size="lg"),
                         html.Div(id="photo-status", className="text-muted small mt-2"),
                         html.Img(
                             id="photo-preview",
@@ -3150,53 +2500,37 @@ if __name__ == "__main__":
                     ]
                 ),
                 className="mb-3",
-                style={"display": "none"},
             ),
 
             dbc.Card(
                 dbc.CardBody(
                     [
                         html.H5("Tray Actions"),
-                        dbc.Row([
-                            dbc.Col([
-                                dbc.Button("Check first cup", id="btn-first", color="info", disabled=True, style={"width": "100%"}),
-                                html.Div(id="tray-first-cup-coords", className="text-muted small mt-1"),
-                            ], width=6),
-                            dbc.Col([
-                                dbc.Button("Check last cup", id="btn-last", color="info", disabled=True, style={"width": "100%"}),
-                                html.Div(id="tray-last-cup-coords", className="text-muted small mt-1"),
-                            ], width=6),
-                        ], className="mb-3"),
-                        dbc.Row([
-                            dbc.Col([
-                                dbc.Button("Edit first cup", id="btn-edit-first", color="warning", disabled=True, style={"width": "100%"}),
-                                html.Div(id="tray-current-coords", className="text-primary small fw-bold mt-1"),
-                            ], width=6),
-                            dbc.Col([
-                                dbc.Button("Save first cup", id="btn-save-first", color="success", disabled=True, style={"width": "100%"}),
-                            ], width=6),
-                        ], className="mb-3"),
-                        
-                        html.Hr(),
-                        dbc.Row([
-                            dbc.Col([
-                                dbc.Button("Home (G28 X Y)", id="btn-home", color="primary", disabled=True, style={"width": "100%"}),
-                                html.Div(id="tray-home-coords", className="text-muted small mt-1"),
-                            ], width=6),
-                        ], className="mb-3"),
-                        
-                        html.Hr(),
-                        dbc.Row([
-                            dbc.Col([
-                                dbc.Button("Forward", id="btn-forward-sequence", color="secondary", disabled=True, style={"width": "100%"}),
-                            ], width=6),
-                            dbc.Col([
-                                dbc.Button("Reset", id="btn-reset-sequence", color="warning", disabled=True, style={"width": "100%"}),
-                            ], width=6),
+                        html.Div([
+                            dbc.Button("Check first cup", id="btn-first", color="info", disabled=True, className="me-2"),
+                            html.Span(id="tray-first-cup-coords", className="text-muted small"),
                         ], className="mb-2"),
-                        html.Div(id="tray-sequence-row", className="text-muted small"),
+                        html.Div([
+                            dbc.Button("Check last cup", id="btn-last", color="info", disabled=True, className="me-2"),
+                            html.Span(id="tray-last-cup-coords", className="text-muted small"),
+                        ], className="mb-2"),
+                        html.Div([
+                            dbc.Button("Edit first cup", id="btn-edit-first", color="warning", disabled=True, className="me-2"),
+                            html.Span(id="tray-current-coords", className="text-primary small fw-bold"),
+                        ], className="mb-2"),
+                        dbc.Button("Save first cup", id="btn-save-first", color="success", disabled=True),
+                        html.Hr(),
+                        html.Div([
+                            dbc.Button("Home (G28)", id="btn-home", color="primary", disabled=True, className="me-2"),
+                            html.Span(id="tray-home-coords", className="text-muted small"),
+                        ]),
                         
                         html.Hr(),
+                        html.Div([
+                            dbc.Button("Forward", id="btn-forward-sequence", color="secondary", disabled=True, className="me-2"),
+                            dbc.Button("Reset", id="btn-reset-sequence", color="warning", disabled=True, className="me-2"),
+                            html.Span(id="tray-sequence-row", className="text-muted small"),
+                        ]),
                         html.H6("Manual Control (active during Edit mode)", className="mt-3"),
                         html.P("Use keyboard: arrow keys (X/Y), - / = (Z), or click buttons below", className="text-muted small"),
                         dcc.Store(id="store-edit-mode", data=False),
@@ -3235,102 +2569,6 @@ if __name__ == "__main__":
                         dcc.Interval(id="tray-position-poll", interval=2000, n_intervals=0, disabled=False),
                     ]
                 ),
-            ),
-
-            dbc.Card(
-                dbc.CardBody(
-                    [
-                        html.H5("Combo Sequence"),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    [
-                                        html.Label("Count", className="small"),
-                                        dbc.Input(
-                                            id="x550-combo-count",
-                                            type="number",
-                                            min=1,
-                                            step=1,
-                                            value=2,
-                                            placeholder="Count",
-                                        ),
-                                    ],
-                                    md=1,
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.Label("\u00A0", className="small"),
-                                        dbc.Button("Start", id="btn-x550-start-combo-sequence", color="primary", style={"display": "none"}),
-                                    ],
-                                    md="auto",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.Label("\u00A0", className="small"),
-                                        dbc.Button("Start 2", id="btn-x550-start-combo-sequence-2", color="success", style={"display": "none"}),
-                                    ],
-                                    md="auto",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.Label("\u00A0", className="small"),
-                                        dbc.Button("Start 3", id="btn-x550-start-combo-sequence-3", color="info"),
-                                    ],
-                                    md="auto",
-                                ),
-                                dbc.Col(
-                                    [
-                                        html.Label("\u00A0", className="small"),
-                                        dbc.Button("Abort", id="btn-x550-abort-combo-sequence", color="danger"),
-                                    ],
-                                    md="auto",
-                                ),
-                            ],
-                            className="g-2",
-                            align="center",
-                        ),
-                        html.Div([
-                            html.Div(id="x550-live-status", className="fw-bold", style={"color": "#0b6bcb"}),
-                            html.H4(id="x550-combo-sequence-current-status", className="mt-3 mb-2", style={"color": "#0066cc"}),
-                            html.H2(id="x550-combo-sequence-countdown", className="mb-2", style={"color": "#ff6600", "fontWeight": "bold"}),
-                        ]),
-                        html.Div(id="x550-combo-sequence-status", className="text-muted small mt-2"),
-                    ]
-                ),
-                className="mb-3",
-            ),
-
-            dbc.Card(
-                dbc.CardBody(
-                    [
-                        html.H5("Quick Test"),
-                        dbc.Row([
-                            dbc.Col([
-                                dbc.Button("1 Mining Test", id="btn-x550-quick-test", color="success", size="lg"),
-                                html.Div(id="x550-quick-test-status", className="text-muted small mt-2"),
-                            ], md=4),
-                            dbc.Col([
-                                dbc.Button("1 Soil Test", id="btn-x550-quick-soil-test", color="info", size="lg"),
-                                html.Div(id="x550-quick-soil-test-status", className="text-muted small mt-2"),
-                            ], md=4),
-                            dbc.Col([
-                                dbc.Button("Combo Test", id="btn-x550-quick-combo-test", color="warning", size="lg"),
-                                html.Div(id="x550-quick-combo-test-status", className="text-muted small mt-2"),
-                            ], md=4),
-                        ]),
-                        dbc.Row([
-                            dbc.Col([
-                                dbc.Button("Combo Test 2", id="btn-x550-quick-combo-test-2", color="success", size="lg"),
-                                html.Div(id="x550-quick-combo-test-2-status", className="text-muted small mt-2"),
-                            ], md=4),
-                            dbc.Col([
-                                dbc.Button("Combo Test 3", id="btn-x550-quick-combo-test-3", color="info", size="lg"),
-                                html.Div(id="x550-quick-combo-test-3-status", className="text-muted small mt-2"),
-                            ], md=4),
-                        ], className="mt-2"),
-                    ]
-                ),
-                className="mb-3",
             ),
 
             html.Hr(),
