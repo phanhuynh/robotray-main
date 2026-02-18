@@ -2,12 +2,21 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Run robotray_dash.py (550_dashboard)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/robotray_dash.py",
+      "console": "integratedTerminal",
+      "python": "C:/Users/plancton/AppData/Local/spyder-6/envs/550_dashboard/python.exe",
+      "cwd": "${workspaceFolder}"
+    },
+    {
       "name": "Run plot test.py (Anaconda)",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/plot test.py",
       "console": "integratedTerminal",
-      "python": "C:/Users/plancton/anaconda3/python.exe",
+      "python": "C:/Users/plancton/AppData/Local/spyder-6/envs/550_dashboard/python.exe",
       "cwd": "${workspaceFolder}"
     }
   ]

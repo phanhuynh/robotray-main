@@ -38,6 +38,11 @@ FIRST_CUP_Y = 10.0
 LAST_CUP_X = 11.0
 LAST_CUP_Y = 9.0
 
+# Shared tray position used before X-550 calibration
+CALIBRATION_POS_X = 173.0
+CALIBRATION_POS_Y = 58.0
+CALIBRATION_POS_Z = 0.0
+
 # Track last fired test for each sequence to prevent duplicates
 MINING_LAST_FIRED = 0
 SOIL_LAST_FIRED = 0
@@ -2367,27 +2372,20 @@ def x550_calibrate(_n_clicks, x550_data):
     log_button_click("Calibrate")
     if not x550_data or not x550_data.get("x550_connected"):
         return "[ERROR] X550 not connected", None, True
+
+    if not _TRAY_INSTANCE or not _TRAY_INSTANCE.is_connected():
+        return "[ERROR] Tray not connected - cannot move to calibration position", None, True
     
     base_url = x550_data.get("x550_url")
     if not base_url:
         return "[ERROR] Missing base URL", None, True
     
-    # First, move tray to position calibration location
     try:
-        if _TRAY_INSTANCE and _TRAY_INSTANCE.is_connected():
-            _TRAY_INSTANCE._send("G28 X Y")
-            _TRAY_INSTANCE._read_response()
-            _TRAY_INSTANCE.goto(x=173.0, y=58.0, z=0.0)
-            print("[CALIBRATE] Tray moved to calibration position")
-            # Wait for tray to settle before starting calibration
-            time.sleep(5)
-            print("[CALIBRATE] Tray settled, proceeding with calibration")
-        else:
-            print("[CALIBRATE] Warning: Tray not connected, skipping position move")
-    except Exception as e:
-        print(f"[CALIBRATE] Warning: Could not move tray to position: {e}")
-    
-    try:
+        # Move tray to correction/calibration location first, then wait 3 seconds
+        print(f"[CALIBRATE] Moving tray to calibration position X={CALIBRATION_POS_X}, Y={CALIBRATION_POS_Y}, Z={CALIBRATION_POS_Z}")
+        _TRAY_INSTANCE.goto(x=CALIBRATION_POS_X, y=CALIBRATION_POS_Y, z=CALIBRATION_POS_Z)
+        time.sleep(3)
+
         # Energy calibration endpoint for X-series XRF analyzers
         cal_url = f"{base_url}/api/v2/energyCal"
         
@@ -2764,10 +2762,8 @@ def tray_checks(n_first, n_last, n_edit, n_save, n_xp, n_xm, n_yp, n_ym, n_zp, n
         return "[OK] Sequence reset to start (row 2)", False, False, f"Row: {TRAY_SEQUENCE_ROW}"
     
     if ctx == "btn-position-tray":
-        _TRAY_INSTANCE._send("G28 X Y")
-        _TRAY_INSTANCE._read_response()
-        _TRAY_INSTANCE.goto(x=173.0, y=58.0, z=0.0)
-        return "[OK] Homed X and Y, then moved to position (X=173.0, Y=58.0, Z=0.0)", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
+        _TRAY_INSTANCE.goto(x=CALIBRATION_POS_X, y=CALIBRATION_POS_Y, z=CALIBRATION_POS_Z)
+        return f"[OK] Moved to position (X={CALIBRATION_POS_X}, Y={CALIBRATION_POS_Y}, Z={CALIBRATION_POS_Z})", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
 
     return dash.no_update, dash.no_update, dash.no_update, f"Row: {TRAY_SEQUENCE_ROW}"
 
@@ -3350,4 +3346,4 @@ if __name__ == "__main__":
     if os.environ.get("WERKZEUG_RUN_MAIN") != "true":
         webbrowser.open(f"http://{HOST}:{PORT}/")
 
-    app.run(debug=True, host=HOST, port=PORT)
+    app.run(debug=True, use_reloader=False, host=HOST, port=PORT)
