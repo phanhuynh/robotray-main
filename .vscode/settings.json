@@ -3,5 +3,12 @@
   "python.terminal.activateEnvironment": true,
   "python-envs.defaultEnvManager": "ms-python.python:conda",
   "python-envs.defaultPackageManager": "ms-python.python:conda",
-  "python-envs.pythonProjects": []
+  "python-envs.pythonProjects": [],
+  "chat.tools.terminal.autoApprove": {
+    "/^python models_phan/plot_elem_wrongpred\\.py$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "&": true
+  }
 }

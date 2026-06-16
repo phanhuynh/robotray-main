@@ -1,0 +1,109 @@
+warning: in the working copy of 'plots_phan/plot_median.ipynb', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'plots_phan/plot_raw_csv.ipynb', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'plots_phan/plot_snr.ipynb', LF will be replaced by CRLF the next time Git touches it
+ .vscode/settings.json                              |       9 [32m+[m[31m-[m
+ PLOTTING_RESULTS.md                                |      74 [31m-[m
+ all_plots_dashboard.html                           |     130 [31m-[m
+ all_plots_one_window.html                          |      31 [31m-[m
+ all_spectra_combined.html                          |    3888 [31m-[m
+ clean_file.py                                      |      31 [31m-[m
+ combined_plot.html                                 |     133 [31m-[m
+ energy_intensity_average.html                      |    3888 [31m-[m
+ energy_intensity_grid.html                         |    3888 [31m-[m
+ energy_intensity_overlaid.html                     |    3888 [31m-[m
+ extract_api.py                                     |      21 [31m-[m
+ fix_corruption.py                                  |      29 [31m-[m
+ fix_indent.py                                      |      15 [31m-[m
+ fix_patch.py                                       |      15 [31m-[m
+ mining_high_voltage_average.html                   |    3907 [31m-[m
+ mining_high_voltage_data.csv                       |  307201 [31m-----[m
+ mining_high_voltage_data.json                      | 1228802 [31m-----------------[m
+ mining_high_voltage_plot.html                      |    3888 [31m-[m
+ mining_high_voltage_stats.json                     |      11 [31m-[m
+ mining_low_voltage_average.html                    |    3907 [31m-[m
+ ...00003_2025_10_08_10280022_MiningHighVoltage.csv |    2049 [31m-[m
+ ...000003_2025_10_08_10280022_MiningLowVoltage.csv |    2049 [31m-[m
+ plot test.py                                       |     103 [31m-[m
+ plot_all_combined.py                               |      95 [31m-[m
+ plot_all_in_one_window.py                          |     124 [31m-[m
+ plot_all_voltage_types.py                          |     108 [31m-[m
+ plot_energy_intensity.py                           |     171 [31m-[m
+ plot_mining_high_voltage.py                        |      88 [31m-[m
+ plot_mining_high_voltage_all.py                    |      74 [31m-[m
+ plot_mining_high_voltage_all_interactive.py        |      98 [31m-[m
+ plot_mining_high_voltage_average.py                |     116 [31m-[m
+ plot_mining_high_voltage_complete.ipynb            |     282 [31m-[m
+ plot_mining_high_voltage_smoothed.py               |     105 [31m-[m
+ plot_mining_low_voltage_smoothed.py                |     105 [31m-[m
+ plot_mininghighvoltage.ipynb                       |     362 [31m-[m
+ plot_mininghighvoltage_clean.ipynb                 |     101 [31m-[m
+ plot_soil_high_voltage_smoothed.py                 |     105 [31m-[m
+ plot_soil_low_voltage_smoothed.py                  |     105 [31m-[m
+ plot_soil_mid_voltage_smoothed.py                  |     105 [31m-[m
+ plot_with_plotly.py                                |     177 [31m-[m
+ plots_phan/plot_median.ipynb                       |       6 [32m+[m[31m-[m
+ plots_phan/plot_raw_csv.ipynb                      |    5966 [32m+[m[31m-[m
+ plots_phan/plot_snr.ipynb                          |     235 [32m+[m[31m-[m
+ plots_phan/test17feb.txt                           |       1 [31m-[m
+ plots_phan/test_main_branch.txt                    |       1 [31m-[m
+ remove_plotly_scrollbars.js                        |      38 [31m-[m
+ requirements.txt                                   |       6 [31m-[m
+ robotray_dash.py                                   |    3325 [31m-[m
+ robotray_dash_backup.py                            |     499 [31m-[m
+ robotray_dash_backup2feb.py                        |    3218 [31m-[m
+ ...4_2026_02_09_15172745_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...54_2026_02_09_15172745_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...854_2026_02_09_15173272_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2854_2026_02_09_15173272_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2854_2026_02_09_15173272_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002854_2026_02_09_15173279_chemistry.csv       |       3 [31m-[m
+ .../002854_2026_02_09_15173280_photo.png           |     Bin [31m32395[m -> [32m0[m bytes
+ ...5_2026_02_09_15173763_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...55_2026_02_09_15173763_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...855_2026_02_09_15174294_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2855_2026_02_09_15174294_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2855_2026_02_09_15174294_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002855_2026_02_09_15174299_chemistry.csv       |       3 [31m-[m
+ .../002855_2026_02_09_15174300_photo.png           |     Bin [31m33045[m -> [32m0[m bytes
+ ...6_2026_02_09_15174806_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...56_2026_02_09_15174806_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...856_2026_02_09_15175330_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2856_2026_02_09_15175330_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2856_2026_02_09_15175330_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002856_2026_02_09_15175337_chemistry.csv       |       3 [31m-[m
+ .../002856_2026_02_09_15175337_photo.png           |     Bin [31m32902[m -> [32m0[m bytes
+ ...7_2026_02_09_15175811_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...57_2026_02_09_15175811_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...857_2026_02_09_15180332_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2857_2026_02_09_15180332_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2857_2026_02_09_15180332_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002857_2026_02_09_15180338_chemistry.csv       |       3 [31m-[m
+ .../002857_2026_02_09_15180339_photo.png           |     Bin [31m33004[m -> [32m0[m bytes
+ ...8_2026_02_09_15180825_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...58_2026_02_09_15180825_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...858_2026_02_09_15181345_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2858_2026_02_09_15181345_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2858_2026_02_09_15181345_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002858_2026_02_09_15181351_chemistry.csv       |       3 [31m-[m
+ .../002858_2026_02_09_15181352_photo.png           |     Bin [31m32941[m -> [32m0[m bytes
+ ...9_2026_02_09_15181837_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...59_2026_02_09_15181837_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...859_2026_02_09_15182363_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2859_2026_02_09_15182363_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2859_2026_02_09_15182363_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002859_2026_02_09_15182369_chemistry.csv       |       3 [31m-[m
+ .../002859_2026_02_09_15182370_photo.png           |     Bin [31m32938[m -> [32m0[m bytes
+ ...0_2026_02_09_15182840_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...60_2026_02_09_15182840_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...860_2026_02_09_15183369_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2860_2026_02_09_15183369_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2860_2026_02_09_15183369_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002860_2026_02_09_15183375_chemistry.csv       |       3 [31m-[m
+ .../002860_2026_02_09_15183376_photo.png           |     Bin [31m32301[m -> [32m0[m bytes
+ ...1_2026_02_09_15183855_MiningHighVoltage_CPS.csv |    2049 [31m-[m
+ ...61_2026_02_09_15183855_MiningLowVoltage_CPS.csv |    2049 [31m-[m
+ ...861_2026_02_09_15184374_SoilHighVoltage_CPS.csv |    2049 [31m-[m
+ ...2861_2026_02_09_15184374_SoilLowVoltage_CPS.csv |    2049 [31m-[m
+ ...2861_2026_02_09_15184374_SoilMidVoltage_CPS.csv |    2049 [31m-[m
+ .../002861_2026_02_09_15184379_chemistry.csv       |       3 [31m-[m
+ .../002861_2026_02_09_15184380_photo.png           | 

@@ -1,0 +1,32 @@
+npz: C:\Users\phuynh\Projects\robotray-main\models_v2_phan\fuse_inspect_out\embeddings_val.npz
+samples: 1197
+image_dim: 512
+spectra_dim: 128
+classes (logits): 8
+accuracy: 0.959064
+
+confusion_matrix (rows=true, cols=pred):
+[[142   0   0   0   6   1   0   0]
+ [  0 146   1   3   0   0   0   0]
+ [  0   0 142   2   3   3   0   0]
+ [  0   0   1 143   5   0   0   0]
+ [  6   0   0  13 130   0   0   1]
+ [  0   0   0   2   2 146   0   0]
+ [  0   0   0   0   0   0 150   0]
+ [  0   0   0   0   0   0   0 149]]
+
+classification_report:
+              precision    recall  f1-score   support
+
+    feldspar     0.9595    0.9530    0.9562       149
+      garnet     1.0000    0.9733    0.9865       150
+monazite-bra     0.9861    0.9467    0.9660       150
+       nephe     0.8773    0.9597    0.9167       149
+      quartz     0.8904    0.8667    0.8784       150
+      rutile     0.9733    0.9733    0.9733       150
+        tray     1.0000    1.0000    1.0000       150
+      zircon     0.9933    1.0000    0.9967       149
+
+    accuracy                         0.9591      1197
+   macro avg     0.9600    0.9591    0.9592      1197
+weighted avg     0.9600    0.9591    0.9592      1197

@@ -1,0 +1,32 @@
+npz: C:\Users\phuynh\Projects\robotray-main\models_v2_phan\fuse_inspect_smoke\embeddings_val.npz
+samples: 16
+image_dim: 512
+spectra_dim: 128
+classes (logits): 8
+accuracy: 1.000000
+
+confusion_matrix (rows=true, cols=pred):
+[[1 0 0 0 0 0 0 0]
+ [0 3 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0 0]
+ [0 0 0 4 0 0 0 0]
+ [0 0 0 0 1 0 0 0]
+ [0 0 0 0 0 3 0 0]
+ [0 0 0 0 0 0 3 0]
+ [0 0 0 0 0 0 0 1]]
+
+classification_report:
+              precision    recall  f1-score   support
+
+    feldspar     1.0000    1.0000    1.0000         1
+      garnet     1.0000    1.0000    1.0000         3
+monazite-bra     0.0000    0.0000    0.0000         0
+       nephe     1.0000    1.0000    1.0000         4
+      quartz     1.0000    1.0000    1.0000         1
+      rutile     1.0000    1.0000    1.0000         3
+        tray     1.0000    1.0000    1.0000         3
+      zircon     1.0000    1.0000    1.0000         1
+
+    accuracy                         1.0000        16
+   macro avg     0.8750    0.8750    0.8750        16
+weighted avg     1.0000    1.0000    1.0000        16

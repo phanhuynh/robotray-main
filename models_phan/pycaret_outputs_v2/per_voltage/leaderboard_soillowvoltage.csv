@@ -1,0 +1,5 @@
+Model,Accuracy,AUC,Recall,Prec.,F1,Kappa,MCC,TT (Sec)
+Light Gradient Boosting Machine,0.9512,0.9972,0.9512,0.9519,0.9512,0.9442,0.9443,2.784
+Ridge Classifier,0.6071,0.0,0.6071,0.577,0.5859,0.551,0.5547,0.032
+Logistic Regression,0.5919,0.0,0.5919,0.5871,0.5887,0.5336,0.5339,0.062
+K Neighbors Classifier,0.5299,0.8055,0.5299,0.5338,0.5308,0.4627,0.4633,0.064

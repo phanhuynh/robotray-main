@@ -1,0 +1,2 @@
+experiment,Model,Accuracy,AUC,Recall,Prec.,F1,Kappa,MCC
+unified_base_with_voltage_categorical,Light Gradient Boosting Machine,0.8381,0.9787,0.8381,0.8399,0.8385,0.815,0.8151

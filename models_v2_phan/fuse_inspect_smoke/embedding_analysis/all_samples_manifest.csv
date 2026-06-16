@@ -1,0 +1,17 @@
+image_path,label_name,pred_name,y_true,y_pred,correct,pred_confidence
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\023012_2026_04_14_nephe_150\023129_2026_04_14_nephe.jpg,nephe,nephe,3,3,1,0.956479549407959
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\019712_2026_04_03_rutile_150\019771_2026_04_03_rutile.jpg,rutile,rutile,5,5,1,0.999995231628418
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\019562_2026_04_03_rutile_150\019570_2026_04_03_rutile.jpg,rutile,rutile,5,5,1,0.9999743700027466
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\023012_2026_04_14_nephe_150\023085_2026_04_14_nephe.jpg,nephe,nephe,3,3,1,0.9999891519546509
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\024362_2026_04_16_garnet_150\024419_2026_04_16_garnet.jpg,garnet,garnet,1,1,1,0.9999653100967407
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\023012_2026_04_14_nephe_150\023107_2026_04_14_nephe.jpg,nephe,nephe,3,3,1,0.9997846484184265
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\019712_2026_04_03_rutile_150\019721_2026_04_03_rutile.jpg,rutile,rutile,5,5,1,0.9999890327453613
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\023312_2026_04_14_nephe_150\023378_2026_04_14_nephe.jpg,nephe,nephe,3,3,1,0.9996028542518616
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\022862_2026_04_14_zircon_150\023002_2026_04_14_zircon.jpg,zircon,zircon,7,7,1,0.9999967813491821
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\020762_2026_04_08_feldspar_150\020799_2026_04_08_feldspar.jpg,feldspar,feldspar,0,0,1,0.848272979259491
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\024362_2026_04_16_garnet_150\024459_2026_04_16_garnet.jpg,garnet,garnet,1,1,1,0.9999992847442627
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\024962_2026_04_21_tray_150\025097_2026_04_21_tray.jpg,tray,tray,6,6,1,0.9999983310699463
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\024062_2026_04_15_garnet_150\024148_2026_04_15_garnet.jpg,garnet,garnet,1,1,1,0.9911212921142578
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\025562_2026_04_22_tray_150\025656_2026_04_22_tray.jpg,tray,tray,6,6,1,0.9999921321868896
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\021812_2026_04_10_quartz_150\021960_2026_04_10_quartz.jpg,quartz,quartz,4,4,1,0.993920087814331
+C:\Users\phuynh\Projects\robotray-main\robotray_v2\sample_outputs_v2\025562_2026_04_22_tray_150\025684_2026_04_22_tray.jpg,tray,tray,6,6,1,0.9999984502792358

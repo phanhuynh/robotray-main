@@ -1,0 +1,5 @@
+checkpoint: C:\Users\phuynh\Projects\robotray-main\models_v2_phan\mineral_fusion_resnet18_spectra.pth
+gradcam_target: image_backbone.layer4
+image_embedding_dim: 512
+spectra_embedding_dim: 128
+logits_dim: 8
