@@ -38,6 +38,11 @@ FIRST_CUP_Y = 10.0
 LAST_CUP_X = 11.0
 LAST_CUP_Y = 9.0
 
+# Shared tray position used before X-550 calibration
+CALIBRATION_POS_X = 173.0
+CALIBRATION_POS_Y = 58.0
+CALIBRATION_POS_Z = 0.0
+
 # Track last fired test for each sequence to prevent duplicates
 MINING_LAST_FIRED = 0
 SOIL_LAST_FIRED = 0
@@ -1999,6 +2004,9 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
         try:
             _TRAY_INSTANCE.goto(x=FIRST_CUP_X, y=FIRST_CUP_Y, z=0)
             print(f"[COMBO SEQUENCE 3] Moved to first cup (X={FIRST_CUP_X}, Y={FIRST_CUP_Y})")
+            # Wait for tray to settle before starting tests
+            time.sleep(3)
+            print("[COMBO SEQUENCE 3] Tray settled, starting tests")
         except Exception as e:
             print(f"[COMBO SEQUENCE 3] Warning: Could not move to first cup: {e}")
 
@@ -2006,15 +2014,31 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
     last_num = None
     results = []
     current_status = ""
+    test_subfolder = None  # Will be created after we get first test number
 
     for i in range(combo_count):
         test_num = get_next_test_number()
         if first_num is None:
             first_num = test_num
+            # Create subfolder with naming convention: {test_num}_{date}_{sample}_{count}
+            if SAVED_FOLDER:
+                now = datetime.datetime.now()
+                date_str = now.strftime("%Y_%m_%d")
+                subfolder_name = f"{test_num:06d}_{date_str}_{sample_type}_{combo_count}"
+                test_subfolder = os.path.join(SAVED_FOLDER, subfolder_name)
+                try:
+                    os.makedirs(test_subfolder, exist_ok=True)
+                    print(f"[COMBO SEQUENCE 3] Created subfolder: {test_subfolder}")
+                except Exception as e:
+                    print(f"[COMBO SEQUENCE 3] Warning: Could not create subfolder: {e}")
+                    test_subfolder = SAVED_FOLDER  # Fallback to main folder
         last_num = test_num
 
         log_button_click("Combo Test 3", test_number=f"{test_num:06d}")
         chemistry_rows = []
+
+        # Debug: Log subfolder status
+        print(f"[COMBO SEQUENCE 3] DEBUG: test_subfolder = {test_subfolder}, exists = {os.path.exists(test_subfolder) if test_subfolder else False}")
 
         # Mining
         try:
@@ -2028,7 +2052,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                 num_spectra = len(mining_result.get("spectra", []))
                 print(f"[COMBO SEQUENCE 3] Mining test received {num_spectra} spectra")
 
-                if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
+                if test_subfolder and os.path.exists(test_subfolder):
                     now = datetime.datetime.now()
                     timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
                     
@@ -2053,7 +2077,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                             shot_num += 1
 
                             csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_{sample_type}.csv"
-                            csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
+                            csv_filepath = os.path.join(test_subfolder, csv_filename)
 
                             with open(csv_filepath, 'w') as f:
                                 f.write("Energy (keV),Intensity (CPS)\n")
@@ -2102,7 +2126,16 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                 num_spectra = len(soil_result.get("spectra", []))
                 print(f"[COMBO SEQUENCE 3] Soil test received {num_spectra} spectra")
 
-                if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
+                # Use test_subfolder if available, otherwise fallback to SAVED_FOLDER
+                soil_save_folder = None
+                if test_subfolder and os.path.exists(test_subfolder):
+                    soil_save_folder = test_subfolder
+                    print(f"[COMBO SEQUENCE 3] Saving Soil spectra to subfolder: {test_subfolder}")
+                elif SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
+                    soil_save_folder = SAVED_FOLDER
+                    print(f"[COMBO SEQUENCE 3] WARNING: test_subfolder unavailable, saving Soil spectra to SAVED_FOLDER: {SAVED_FOLDER}")
+                
+                if soil_save_folder:
                     now = datetime.datetime.now()
                     timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
                     
@@ -2127,7 +2160,7 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                             shot_num += 1
 
                             csv_filename = f"{test_num:06d}_{timestamp}_{beam_name}_{sample_type}.csv"
-                            csv_filepath = os.path.join(SAVED_FOLDER, csv_filename)
+                            csv_filepath = os.path.join(soil_save_folder, csv_filename)
 
                             with open(csv_filepath, 'w') as f:
                                 f.write("Energy (keV),Intensity (CPS)\n")
@@ -2165,11 +2198,11 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
             results.append(f"Soil: error ({str(e)[:50]})")
 
         # Save chemistry data to CSV for this test
-        if chemistry_rows and SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
+        if chemistry_rows and test_subfolder and os.path.exists(test_subfolder):
             try:
                 chem_now = datetime.datetime.now()
                 chem_timestamp = chem_now.strftime("%Y_%m_%d_%H%M%S") + f"{int(chem_now.microsecond / 10000):02d}"
-                chemistry_csv = os.path.join(SAVED_FOLDER, f"{test_num:06d}_{chem_timestamp}_chemistry_{sample_type}.csv")
+                chemistry_csv = os.path.join(test_subfolder, f"{test_num:06d}_{chem_timestamp}_chemistry_{sample_type}.csv")
                 
                 ELEMENT_SYMBOLS = {
                     1: "H", 2: "He", 3: "Li", 4: "Be", 5: "B", 6: "C", 7: "N", 8: "O", 9: "F", 10: "Ne",
@@ -2226,11 +2259,11 @@ def start_x550_combo_sequence_3(_n_clicks, combo_count, x550_data, sample_type):
                 print(f"[COMBO SEQUENCE 3] Error saving chemistry data: {e}")
 
         # Save single screenshot after both tests complete
-        if SAVED_FOLDER and os.path.exists(SAVED_FOLDER):
+        if test_subfolder and os.path.exists(test_subfolder):
             now = datetime.datetime.now()
             timestamp = now.strftime("%Y_%m_%d_%H%M%S") + f"{int(now.microsecond / 10000):02d}"
             screenshot_name = f"{test_num:06d}_{timestamp}_photo_{sample_type}.png"
-            screenshot_path = os.path.join(SAVED_FOLDER, screenshot_name)
+            screenshot_path = os.path.join(test_subfolder, screenshot_name)
             save_x550_screenshot(base_url, screenshot_path)
 
         log_button_click("Combo Test 3 Complete", is_button=False, test_number=f"{test_num:06d}")
@@ -2339,27 +2372,20 @@ def x550_calibrate(_n_clicks, x550_data):
     log_button_click("Calibrate")
     if not x550_data or not x550_data.get("x550_connected"):
         return "[ERROR] X550 not connected", None, True
+
+    if not _TRAY_INSTANCE or not _TRAY_INSTANCE.is_connected():
+        return "[ERROR] Tray not connected - cannot move to calibration position", None, True
     
     base_url = x550_data.get("x550_url")
     if not base_url:
         return "[ERROR] Missing base URL", None, True
     
-    # First, move tray to position calibration location
     try:
-        if _TRAY_INSTANCE and _TRAY_INSTANCE.is_connected():
-            _TRAY_INSTANCE._send("G28 X Y")
-            _TRAY_INSTANCE._read_response()
-            _TRAY_INSTANCE.goto(x=173.0, y=58.0, z=0.0)
-            print("[CALIBRATE] Tray moved to calibration position")
-            # Wait for tray to settle before starting calibration
-            time.sleep(5)
-            print("[CALIBRATE] Tray settled, proceeding with calibration")
-        else:
-            print("[CALIBRATE] Warning: Tray not connected, skipping position move")
-    except Exception as e:
-        print(f"[CALIBRATE] Warning: Could not move tray to position: {e}")
-    
-    try:
+        # Move tray to correction/calibration location first, then wait 3 seconds
+        print(f"[CALIBRATE] Moving tray to calibration position X={CALIBRATION_POS_X}, Y={CALIBRATION_POS_Y}, Z={CALIBRATION_POS_Z}")
+        _TRAY_INSTANCE.goto(x=CALIBRATION_POS_X, y=CALIBRATION_POS_Y, z=CALIBRATION_POS_Z)
+        time.sleep(3)
+
         # Energy calibration endpoint for X-series XRF analyzers
         cal_url = f"{base_url}/api/v2/energyCal"
         
@@ -2736,10 +2762,8 @@ def tray_checks(n_first, n_last, n_edit, n_save, n_xp, n_xm, n_yp, n_ym, n_zp, n
         return "[OK] Sequence reset to start (row 2)", False, False, f"Row: {TRAY_SEQUENCE_ROW}"
     
     if ctx == "btn-position-tray":
-        _TRAY_INSTANCE._send("G28 X Y")
-        _TRAY_INSTANCE._read_response()
-        _TRAY_INSTANCE.goto(x=173.0, y=58.0, z=0.0)
-        return "[OK] Homed X and Y, then moved to position (X=173.0, Y=58.0, Z=0.0)", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
+        _TRAY_INSTANCE.goto(x=CALIBRATION_POS_X, y=CALIBRATION_POS_Y, z=CALIBRATION_POS_Z)
+        return f"[OK] Moved to position (X={CALIBRATION_POS_X}, Y={CALIBRATION_POS_Y}, Z={CALIBRATION_POS_Z})", False, True, f"Row: {TRAY_SEQUENCE_ROW}"
 
     return dash.no_update, dash.no_update, dash.no_update, f"Row: {TRAY_SEQUENCE_ROW}"
 
@@ -3322,4 +3346,4 @@ if __name__ == "__main__":
     if os.environ.get("WERKZEUG_RUN_MAIN") != "true":
         webbrowser.open(f"http://{HOST}:{PORT}/")
 
-    app.run(debug=True, host=HOST, port=PORT)
+    app.run(debug=True, use_reloader=False, host=HOST, port=PORT)
