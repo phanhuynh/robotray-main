@@ -1,0 +1,581 @@
+
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <title>PyCaret Experiment Performance Dashboard</title>
+        
+    <style>
+      body { font-family: Arial, sans-serif; margin: 24px; }
+      h1, h2, h3 { margin-bottom: 8px; }
+      section { margin-top: 28px; padding-top: 12px; border-top: 1px solid #ddd; }
+      .tbl { border-collapse: collapse; width: 100%; margin: 8px 0 16px 0; }
+      .tbl th, .tbl td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; }
+      .tbl th { background: #f5f5f5; }
+      pre { background: #f8f8f8; border: 1px solid #eee; padding: 10px; }
+    </style>
+    
+      </head>
+      <body>
+        <h1>PyCaret Experiment Performance Dashboard</h1>
+        <p>Shows top-3 models by experiment ranked by Prec., and links to confusion artifacts.</p>
+        <div>                        <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.5.0.min.js" integrity="sha256-fHbNLP+GlIXN+efbQec78UkemUz3NJp7UmfGxC1tNxs=" crossorigin="anonymous"></script>                <div id="ea1c342c-a500-4bd0-843b-ea8f8d39f5f6" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("ea1c342c-a500-4bd0-843b-ea8f8d39f5f6")) {                    Plotly.newPlot(                        "ea1c342c-a500-4bd0-843b-ea8f8d39f5f6",                        [{"alignmentgroup":"True","hovertemplate":"model=Light Gradient Boosting Machine\u003cbr\u003eexperiment=%{x}\u003cbr\u003eprimary_metric=%{y}\u003cbr\u003erank=%{text}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Light Gradient Boosting Machine","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"Light Gradient Boosting Machine","offsetgroup":"Light Gradient Boosting Machine","orientation":"v","showlegend":true,"text":{"dtype":"f8","bdata":"AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA\u002fAAAAAAAA8D8AAAAAAADwPwAAAAAAAPA\u002fAAAAAAAA8D8="},"textposition":"outside","x":["unified_base_with_voltage_categorical","all_voltages_wide_one_row_per_test","per_voltage_mininghighvoltage","per_voltage_mininglowvoltage","per_voltage_soilhighvoltage","per_voltage_soillowvoltage","per_voltage_soilmidvoltage"],"xaxis":"x","y":{"dtype":"f8","bdata":"\u002fyH99nXg6j+DL0ymCkbvP8dLN4lBYOc\u002fSZ2AJsKG7T\u002fSAN4CCYrvPy7\u002fIf32de4\u002fQfFjzF1L7j8="},"yaxis":"y","type":"bar","texttemplate":"rank %{text}"},{"alignmentgroup":"True","hovertemplate":"model=Logistic Regression\u003cbr\u003eexperiment=%{x}\u003cbr\u003eprimary_metric=%{y}\u003cbr\u003erank=%{text}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Logistic Regression","marker":{"color":"#EF553B","pattern":{"shape":""}},"name":"Logistic Regression","offsetgroup":"Logistic Regression","orientation":"v","showlegend":true,"text":{"dtype":"f8","bdata":"AAAAAAAAAEAAAAAAAADwPwAAAAAAAPA\u002fAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAQAAAAAAAAABA"},"textposition":"outside","x":["unified_base_with_voltage_categorical","mode_group_mining","mode_group_soil","all_voltages_wide_one_row_per_test","per_voltage_mininghighvoltage","per_voltage_mininglowvoltage","per_voltage_soilhighvoltage","per_voltage_soillowvoltage","per_voltage_soilmidvoltage"],"xaxis":"x","y":{"dtype":"f8","bdata":"2V92Tx4W4j9tVn2utmLrPwRWDi2yneU\u002fC0YldQKa6j+hZ7Pqc7XjP6foSC7\u002fIes\u002f1zTvOEVH0j9EaW\u002fwhcniP8x\u002fSL99HeA\u002f"},"yaxis":"y","type":"bar","texttemplate":"rank %{text}"},{"alignmentgroup":"True","hovertemplate":"model=Ridge Classifier\u003cbr\u003eexperiment=%{x}\u003cbr\u003eprimary_metric=%{y}\u003cbr\u003erank=%{text}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Ridge Classifier","marker":{"color":"#00cc96","pattern":{"shape":""}},"name":"Ridge Classifier","offsetgroup":"Ridge Classifier","orientation":"v","showlegend":true,"text":{"dtype":"f8","bdata":"AAAAAAAACEAAAAAAAAAAQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhAAAAAAAAACEAAAAAAAAAIQAAAAAAAAAhA"},"textposition":"outside","x":["unified_base_with_voltage_categorical","mode_group_mining","mode_group_soil","all_voltages_wide_one_row_per_test","per_voltage_mininghighvoltage","per_voltage_mininglowvoltage","per_voltage_soilhighvoltage","per_voltage_soillowvoltage","per_voltage_soilmidvoltage"],"xaxis":"x","y":{"dtype":"f8","bdata":"BFYOLbKd4T\u002fChqdXyjLqP74wmSoYleQ\u002fn82qz9VW6j9m9+RhodbiP3e+nxov3eo\u002fxyk6kst\u002f0D8QWDm0yHbiP6Fns+pztd0\u002f"},"yaxis":"y","type":"bar","texttemplate":"rank %{text}"},{"alignmentgroup":"True","hovertemplate":"model=K Neighbors Classifier\u003cbr\u003eexperiment=%{x}\u003cbr\u003eprimary_metric=%{y}\u003cbr\u003erank=%{text}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"K Neighbors Classifier","marker":{"color":"#ab63fa","pattern":{"shape":""}},"name":"K Neighbors Classifier","offsetgroup":"K Neighbors Classifier","orientation":"v","showlegend":true,"text":{"dtype":"f8","bdata":"AAAAAAAACEAAAAAAAAAAQA=="},"textposition":"outside","x":["mode_group_mining","mode_group_soil"],"xaxis":"x","y":{"dtype":"f8","bdata":"+1xtxf6y6T+Rfvs6cM7kPw=="},"yaxis":"y","type":"bar","texttemplate":"rank %{text}"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":""}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Prec."}},"legend":{"title":{"text":"model"},"tracegroupgap":0},"title":{"text":"Top 3 Models Per Experiment (Prec.)"},"barmode":"group"},                        {"responsive": true}                    )                };            </script>        </div>
+        
+    <section>
+      <h2>All per_voltage Confusion Matrices</h2>
+      <p>Normalized confusion matrices (rows sum to 100%), sorted by lowest Precision first.</p><h3>mininghighvoltage (Precision=0.7305)</h3><table class="tbl"><tr><th>true \ pred</th><th>feldspar</th><th>garnet</th><th>monazite-bra</th><th>nephe</th><th>quartz</th><th>rutile</th><th>tray</th><th>zircon</th></tr><tr><th>feldspar</th><td style="background:rgb(161,161,179);color:#000;text-align:center;">46.4%</td><td style="background:rgb(238,238,230);color:#000;text-align:center;">3.6%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(186,186,195);color:#000;text-align:center;">32.6%</td><td style="background:rgb(225,225,222);color:#000;text-align:center;">10.7%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(236,236,229);color:#000;text-align:center;">4.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>garnet</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(68,68,117);color:#fff;text-align:center;">97.8%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>monazite-bra</th><td style="background:rgb(234,234,228);color:#000;text-align:center;">5.8%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(100,100,138);color:#fff;text-align:center;">80.0%</td><td style="background:rgb(236,236,229);color:#000;text-align:center;">4.9%</td><td style="background:rgb(229,229,224);color:#000;text-align:center;">8.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>nephe</th><td style="background:rgb(206,206,209);color:#000;text-align:center;">21.3%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(239,239,231);color:#000;text-align:center;">3.1%</td><td style="background:rgb(177,177,189);color:#000;text-align:center;">37.3%</td><td style="background:rgb(185,185,195);color:#000;text-align:center;">32.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(236,236,229);color:#000;text-align:center;">4.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>quartz</th><td style="background:rgb(218,218,217);color:#000;text-align:center;">14.7%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(240,240,232);color:#000;text-align:center;">2.2%</td><td style="background:rgb(197,197,203);color:#000;text-align:center;">26.2%</td><td style="background:rgb(161,161,179);color:#000;text-align:center;">46.2%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(226,226,222);color:#000;text-align:center;">10.2%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>rutile</th><td style="background:rgb(238,238,230);color:#000;text-align:center;">3.6%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(77,77,123);color:#fff;text-align:center;">92.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>tray</th><td style="background:rgb(235,235,228);color:#000;text-align:center;">5.3%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(238,238,230);color:#000;text-align:center;">3.6%</td><td style="background:rgb(240,240,232);color:#000;text-align:center;">2.2%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(87,87,129);color:#fff;text-align:center;">87.1%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>zircon</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">99.6%</td></tr></table><h3>mininglowvoltage (Precision=0.9227)</h3><table class="tbl"><tr><th>true \ pred</th><th>feldspar</th><th>garnet</th><th>monazite-bra</th><th>nephe</th><th>quartz</th><th>rutile</th><th>tray</th><th>zircon</th></tr><tr><th>feldspar</th><td style="background:rgb(90,90,131);color:#fff;text-align:center;">84.8%</td><td style="background:rgb(240,240,231);color:#000;text-align:center;">2.7%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(228,228,224);color:#000;text-align:center;">8.9%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>garnet</th><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(69,69,117);color:#fff;text-align:center;">96.4%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>monazite-bra</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(69,69,118);color:#fff;text-align:center;">96.0%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td></tr><tr><th>nephe</th><td style="background:rgb(229,229,224);color:#000;text-align:center;">8.5%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(95,95,135);color:#fff;text-align:center;">81.7%</td><td style="background:rgb(231,231,225);color:#000;text-align:center;">7.6%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>quartz</th><td style="background:rgb(240,240,232);color:#000;text-align:center;">2.2%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(229,229,224);color:#000;text-align:center;">8.4%</td><td style="background:rgb(82,82,126);color:#fff;text-align:center;">88.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>rutile</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(238,238,230);color:#000;text-align:center;">3.6%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(72,72,119);color:#fff;text-align:center;">94.7%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>tray</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">98.7%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>zircon</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(239,239,231);color:#000;text-align:center;">3.1%</td><td style="background:rgb(70,70,118);color:#fff;text-align:center;">95.5%</td></tr></table><h3>soilmidvoltage (Precision=0.9467)</h3><table class="tbl"><tr><th>true \ pred</th><th>feldspar</th><th>garnet</th><th>monazite-bra</th><th>nephe</th><th>quartz</th><th>rutile</th><th>tray</th><th>zircon</th></tr><tr><th>feldspar</th><td style="background:rgb(67,67,116);color:#fff;text-align:center;">98.2%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>garnet</th><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(78,78,124);color:#fff;text-align:center;">92.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(240,240,232);color:#000;text-align:center;">2.2%</td><td style="background:rgb(240,240,232);color:#000;text-align:center;">2.2%</td><td style="background:rgb(240,240,232);color:#000;text-align:center;">2.2%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>monazite-bra</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(69,69,118);color:#fff;text-align:center;">96.9%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>nephe</th><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(71,71,119);color:#fff;text-align:center;">96.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>quartz</th><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(69,69,117);color:#fff;text-align:center;">97.3%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>rutile</th><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(240,240,232);color:#000;text-align:center;">2.2%</td><td style="background:rgb(240,240,231);color:#000;text-align:center;">2.7%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(238,238,230);color:#000;text-align:center;">3.6%</td><td style="background:rgb(84,84,127);color:#fff;text-align:center;">88.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>tray</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">99.6%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>zircon</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(67,67,116);color:#fff;text-align:center;">98.2%</td></tr></table><h3>soillowvoltage (Precision=0.9519)</h3><table class="tbl"><tr><th>true \ pred</th><th>feldspar</th><th>garnet</th><th>monazite-bra</th><th>nephe</th><th>quartz</th><th>rutile</th><th>tray</th><th>zircon</th></tr><tr><th>feldspar</th><td style="background:rgb(67,67,116);color:#fff;text-align:center;">97.8%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td></tr><tr><th>garnet</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(66,66,116);color:#fff;text-align:center;">98.2%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>monazite-bra</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(68,68,117);color:#fff;text-align:center;">97.3%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>nephe</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(78,78,124);color:#fff;text-align:center;">91.6%</td><td style="background:rgb(240,240,231);color:#000;text-align:center;">2.7%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(236,236,229);color:#000;text-align:center;">4.9%</td></tr><tr><th>quartz</th><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">99.1%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>rutile</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(69,69,118);color:#fff;text-align:center;">96.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>tray</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(68,68,117);color:#fff;text-align:center;">97.3%</td><td style="background:rgb(242,242,233);color:#000;text-align:center;">1.3%</td></tr><tr><th>zircon</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(230,230,225);color:#000;text-align:center;">8.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(79,79,124);color:#fff;text-align:center;">91.1%</td></tr></table><h3>soilhighvoltage (Precision=0.9856)</h3><table class="tbl"><tr><th>true \ pred</th><th>feldspar</th><th>garnet</th><th>monazite-bra</th><th>nephe</th><th>quartz</th><th>rutile</th><th>tray</th><th>zircon</th></tr><tr><th>feldspar</th><td style="background:rgb(65,65,115);color:#fff;text-align:center;">99.6%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>garnet</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">100.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>monazite-bra</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(67,67,116);color:#fff;text-align:center;">98.7%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>nephe</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(66,66,116);color:#fff;text-align:center;">99.1%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(243,243,233);color:#000;text-align:center;">0.9%</td></tr><tr><th>quartz</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">100.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>rutile</th><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">99.6%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td></tr><tr><th>tray</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(65,65,115);color:#fff;text-align:center;">99.6%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td></tr><tr><th>zircon</th><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(244,244,234);color:#000;text-align:center;">0.4%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(245,245,235);color:#000;text-align:center;">0.0%</td><td style="background:rgb(241,241,232);color:#000;text-align:center;">1.8%</td><td style="background:rgb(69,69,117);color:#fff;text-align:center;">97.8%</td></tr></table>
+    </section>
+    
+        
+            <section>
+              <h2>unified_base_with_voltage_categorical</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Light Gradient Boosting Machine</td>
+      <td>0.8381</td>
+      <td>0.9787</td>
+      <td>0.8381</td>
+      <td>0.8399</td>
+      <td>0.8385</td>
+      <td>0.8150</td>
+      <td>0.8151</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Logistic Regression</td>
+      <td>0.5802</td>
+      <td>0.0000</td>
+      <td>0.5802</td>
+      <td>0.5652</td>
+      <td>0.5710</td>
+      <td>0.5202</td>
+      <td>0.5208</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.5654</td>
+      <td>0.0000</td>
+      <td>0.5654</td>
+      <td>0.5505</td>
+      <td>0.5494</td>
+      <td>0.5033</td>
+      <td>0.5061</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/unified_base_with_voltage_categorical_confusion_matrix.csv" target="_blank">unified_base_with_voltage_categorical_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/unified_base_with_voltage_categorical_confusion_matrix_normalized.csv" target="_blank">unified_base_with_voltage_categorical_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>mode_group_mining</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Logistic Regression</td>
+      <td>0.8289</td>
+      <td>0.0000</td>
+      <td>0.8289</td>
+      <td>0.8558</td>
+      <td>0.8219</td>
+      <td>0.8044</td>
+      <td>0.8099</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Ridge Classifier</td>
+      <td>0.8136</td>
+      <td>0.0000</td>
+      <td>0.8136</td>
+      <td>0.8187</td>
+      <td>0.8013</td>
+      <td>0.7870</td>
+      <td>0.7914</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>K Neighbors Classifier</td>
+      <td>0.7866</td>
+      <td>0.9427</td>
+      <td>0.7866</td>
+      <td>0.8031</td>
+      <td>0.7920</td>
+      <td>0.7562</td>
+      <td>0.7574</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/mode_group_mining_confusion_matrix.csv" target="_blank">mode_group_mining_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/mode_group_mining_confusion_matrix_normalized.csv" target="_blank">mode_group_mining_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>mode_group_soil</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Logistic Regression</td>
+      <td>0.6493</td>
+      <td>0.0000</td>
+      <td>0.6493</td>
+      <td>0.6755</td>
+      <td>0.6406</td>
+      <td>0.5992</td>
+      <td>0.6084</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>K Neighbors Classifier</td>
+      <td>0.6364</td>
+      <td>0.8688</td>
+      <td>0.6364</td>
+      <td>0.6502</td>
+      <td>0.6420</td>
+      <td>0.5845</td>
+      <td>0.5850</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.6359</td>
+      <td>0.0000</td>
+      <td>0.6359</td>
+      <td>0.6432</td>
+      <td>0.6334</td>
+      <td>0.5839</td>
+      <td>0.5866</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/mode_group_soil_confusion_matrix.csv" target="_blank">mode_group_soil_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/mode_group_soil_confusion_matrix_normalized.csv" target="_blank">mode_group_soil_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>all_voltages_wide_one_row_per_test</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Light Gradient Boosting Machine</td>
+      <td>0.9767</td>
+      <td>0.9992</td>
+      <td>0.9767</td>
+      <td>0.9773</td>
+      <td>0.9768</td>
+      <td>0.9733</td>
+      <td>0.9734</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Logistic Regression</td>
+      <td>0.8273</td>
+      <td>0.0000</td>
+      <td>0.8273</td>
+      <td>0.8313</td>
+      <td>0.8289</td>
+      <td>0.8027</td>
+      <td>0.8028</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.8292</td>
+      <td>0.0000</td>
+      <td>0.8292</td>
+      <td>0.8231</td>
+      <td>0.8212</td>
+      <td>0.8049</td>
+      <td>0.8066</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/all_voltages_wide_one_row_per_test_confusion_matrix.csv" target="_blank">all_voltages_wide_one_row_per_test_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/all_voltages_wide_one_row_per_test_confusion_matrix_normalized.csv" target="_blank">all_voltages_wide_one_row_per_test_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>per_voltage_mininghighvoltage</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Light Gradient Boosting Machine</td>
+      <td>0.7277</td>
+      <td>0.9405</td>
+      <td>0.7277</td>
+      <td>0.7305</td>
+      <td>0.7285</td>
+      <td>0.6888</td>
+      <td>0.6890</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Logistic Regression</td>
+      <td>0.6167</td>
+      <td>0.0000</td>
+      <td>0.6167</td>
+      <td>0.6159</td>
+      <td>0.6158</td>
+      <td>0.5619</td>
+      <td>0.5622</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.6150</td>
+      <td>0.0000</td>
+      <td>0.6150</td>
+      <td>0.5887</td>
+      <td>0.5961</td>
+      <td>0.5600</td>
+      <td>0.5622</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_mininghighvoltage_confusion_matrix.csv" target="_blank">per_voltage_mininghighvoltage_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_mininghighvoltage_confusion_matrix_normalized.csv" target="_blank">per_voltage_mininghighvoltage_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>per_voltage_mininglowvoltage</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Light Gradient Boosting Machine</td>
+      <td>0.9224</td>
+      <td>0.9930</td>
+      <td>0.9224</td>
+      <td>0.9227</td>
+      <td>0.9221</td>
+      <td>0.9114</td>
+      <td>0.9115</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Logistic Regression</td>
+      <td>0.8473</td>
+      <td>0.0000</td>
+      <td>0.8473</td>
+      <td>0.8479</td>
+      <td>0.8472</td>
+      <td>0.8254</td>
+      <td>0.8255</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.8411</td>
+      <td>0.0000</td>
+      <td>0.8411</td>
+      <td>0.8395</td>
+      <td>0.8243</td>
+      <td>0.8183</td>
+      <td>0.8223</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_mininglowvoltage_confusion_matrix.csv" target="_blank">per_voltage_mininglowvoltage_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_mininglowvoltage_confusion_matrix_normalized.csv" target="_blank">per_voltage_mininglowvoltage_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>per_voltage_soilhighvoltage</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Light Gradient Boosting Machine</td>
+      <td>0.9852</td>
+      <td>0.9993</td>
+      <td>0.9852</td>
+      <td>0.9856</td>
+      <td>0.9852</td>
+      <td>0.9831</td>
+      <td>0.9832</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Logistic Regression</td>
+      <td>0.3007</td>
+      <td>0.0000</td>
+      <td>0.3007</td>
+      <td>0.2856</td>
+      <td>0.2912</td>
+      <td>0.2008</td>
+      <td>0.2013</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.2983</td>
+      <td>0.0000</td>
+      <td>0.2983</td>
+      <td>0.2578</td>
+      <td>0.2691</td>
+      <td>0.1981</td>
+      <td>0.2000</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_soilhighvoltage_confusion_matrix.csv" target="_blank">per_voltage_soilhighvoltage_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_soilhighvoltage_confusion_matrix_normalized.csv" target="_blank">per_voltage_soilhighvoltage_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>per_voltage_soillowvoltage</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Light Gradient Boosting Machine</td>
+      <td>0.9512</td>
+      <td>0.9972</td>
+      <td>0.9512</td>
+      <td>0.9519</td>
+      <td>0.9512</td>
+      <td>0.9442</td>
+      <td>0.9443</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Logistic Regression</td>
+      <td>0.5919</td>
+      <td>0.0000</td>
+      <td>0.5919</td>
+      <td>0.5871</td>
+      <td>0.5887</td>
+      <td>0.5336</td>
+      <td>0.5339</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.6071</td>
+      <td>0.0000</td>
+      <td>0.6071</td>
+      <td>0.5770</td>
+      <td>0.5859</td>
+      <td>0.5510</td>
+      <td>0.5547</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_soillowvoltage_confusion_matrix.csv" target="_blank">per_voltage_soillowvoltage_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_soillowvoltage_confusion_matrix_normalized.csv" target="_blank">per_voltage_soillowvoltage_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+            <section>
+              <h2>per_voltage_soilmidvoltage</h2>
+              <h3>Top 3 Models</h3>
+              <table border="1" class="dataframe tbl">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Rank</th>
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>AUC</th>
+      <th>Recall</th>
+      <th>Prec.</th>
+      <th>F1</th>
+      <th>Kappa</th>
+      <th>MCC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Light Gradient Boosting Machine</td>
+      <td>0.9459</td>
+      <td>0.9970</td>
+      <td>0.9459</td>
+      <td>0.9467</td>
+      <td>0.9458</td>
+      <td>0.9382</td>
+      <td>0.9383</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Logistic Regression</td>
+      <td>0.5173</td>
+      <td>0.0000</td>
+      <td>0.5173</td>
+      <td>0.5036</td>
+      <td>0.5089</td>
+      <td>0.4483</td>
+      <td>0.4488</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Ridge Classifier</td>
+      <td>0.5168</td>
+      <td>0.0000</td>
+      <td>0.5168</td>
+      <td>0.4642</td>
+      <td>0.4781</td>
+      <td>0.4478</td>
+      <td>0.4519</td>
+    </tr>
+  </tbody>
+</table>
+              <h3>Confusion Matrix Artifacts</h3>
+              <ul><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_soilmidvoltage_confusion_matrix.csv" target="_blank">per_voltage_soilmidvoltage_confusion_matrix.csv</a></li><li><a href="pycaret_outputs_v2/_comparison/per_voltage/per_voltage_soilmidvoltage_confusion_matrix_normalized.csv" target="_blank">per_voltage_soilmidvoltage_confusion_matrix_normalized.csv</a></li></ul>
+              <h3>Interactive PyCaret Dashboard</h3>
+              <pre>from pycaret.classification import evaluate_model
+# rerun/load the corresponding best model for this experiment:
+evaluate_model(best_model)</pre>
+            </section>
+            
+      </body>
+    </html>
+    

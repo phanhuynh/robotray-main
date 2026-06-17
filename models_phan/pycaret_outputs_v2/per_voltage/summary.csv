@@ -1,0 +1,6 @@
+experiment,Model,Accuracy,AUC,Recall,Prec.,F1,Kappa,MCC
+base_voltage_soilhighvoltage,Light Gradient Boosting Machine,0.9852,0.9993,0.9852,0.9856,0.9852,0.9831,0.9832
+base_voltage_soillowvoltage,Light Gradient Boosting Machine,0.9512,0.9972,0.9512,0.9519,0.9512,0.9442,0.9443
+base_voltage_soilmidvoltage,Light Gradient Boosting Machine,0.9459,0.997,0.9459,0.9467,0.9458,0.9382,0.9383
+base_voltage_mininglowvoltage,Light Gradient Boosting Machine,0.9224,0.993,0.9224,0.9227,0.9221,0.9114,0.9115
+base_voltage_mininghighvoltage,Light Gradient Boosting Machine,0.7277,0.9405,0.7277,0.7305,0.7285,0.6888,0.689

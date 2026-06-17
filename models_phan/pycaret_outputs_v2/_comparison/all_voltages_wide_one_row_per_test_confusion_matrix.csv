@@ -1,0 +1,9 @@
+,feldspar,garnet,monazite-bra,nephe,quartz,rutile,tray,zircon
+feldspar,220,1,0,1,1,1,1,0
+garnet,1,221,1,2,0,0,0,0
+monazite-bra,1,0,220,3,1,0,0,0
+nephe,0,1,0,214,9,0,0,1
+quartz,0,0,0,4,221,0,0,0
+rutile,0,0,3,4,1,217,0,0
+tray,0,1,0,1,1,0,222,0
+zircon,0,0,0,0,0,0,1,224

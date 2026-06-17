@@ -184,3 +184,19 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Generated outputs
+sample_outputs/
+plots/
+plots_phan/cached_spectrums/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code local settings
+.vscode/
+
+models_phan/df_snr.csv
+models_phan/logs.log
+models_v2_phan/dataset

@@ -1,0 +1,2 @@
+experiment,Model,Accuracy,AUC,Recall,Prec.,F1,Kappa,MCC
+all_voltages_wide_one_row_per_test,Light Gradient Boosting Machine,0.9767,0.9992,0.9767,0.9773,0.9768,0.9733,0.9734

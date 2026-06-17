@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>All Energy Spectra Combined</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #plot-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #plot-container::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="plot-container"></div>
+    
+    <script>
+        // Fetch all 5 HTML files and extract their data
+        const files = [
+            'mining_high_voltage_average.html',
+            'mining_low_voltage_average.html',
+            'soil_high_voltage_average.html',
+            'soil_mid_voltage_average.html',
+            'soil_low_voltage_average.html'
+        ];
+        
+        const colors = {
+            'mining_high_voltage_average.html': '#1f77b4',
+            'mining_low_voltage_average.html': '#ff7f0e',
+            'soil_high_voltage_average.html': '#2ca02c',
+            'soil_mid_voltage_average.html': '#d62728',
+            'soil_low_voltage_average.html': '#9467bd'
+        };
+        
+        const names = {
+            'mining_high_voltage_average.html': 'Mining High Voltage',
+            'mining_low_voltage_average.html': 'Mining Low Voltage',
+            'soil_high_voltage_average.html': 'Soil High Voltage',
+            'soil_mid_voltage_average.html': 'Soil Mid Voltage',
+            'soil_low_voltage_average.html': 'Soil Low Voltage'
+        };
+        
+        let traces = [];
+        let filesProcessed = 0;
+        
+        files.forEach(file => {
+            fetch(file)
+                .then(response => response.text())
+                .then(html => {
+                    // Parse the HTML to find the Plotly data
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // Extract the plot.ly data from the script
+                    const scripts = doc.querySelectorAll('script');
+                    let plotlyData = null;
+                    
+                    for (let script of scripts) {
+                        if (script.textContent.includes('Plotly.newPlot')) {
+                            // Extract data from the script
+                            const match = script.textContent.match(/Plotly\.newPlot\([^,]+,\s*(\[[\s\S]*?\]),\s*(\{[\s\S]*?\})/);
+                            if (match) {
+                                try {
+                                    const data = JSON.parse(match[1]);
+                                    if (data && data.length > 0) {
+                                        // Use the first trace from this file
+                                        const trace = data[0];
+                                        trace.name = names[file];
+                                        trace.line = { color: colors[file], width: 2 };
+                                        traces.push(trace);
+                                    }
+                                } catch(e) {
+                                    console.log('Error parsing data from ' + file, e);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    
+                    filesProcessed++;
+                    
+                    if (filesProcessed === files.length) {
+                        // All files processed, create the combined plot
+                        const layout = {
+                            title: 'Energy Spectra - All Sample Types',
+                            xaxis: { title: 'Energy (keV)' },
+                            yaxis: { title: 'Intensity (CPS)' },
+                            hovermode: 'x unified',
+                            font: { size: 12 },
+                            plot_bgcolor: 'rgba(240,240,240,0.5)',
+                            showlegend: true,
+                            legend: {
+                                yanchor: 'top',
+                                y: 0.99,
+                                xanchor: 'left',
+                                x: 0.01,
+                                bgcolor: 'rgba(255,255,255,0.8)'
+                            },
+                            margin: { l: 60, r: 40, t: 40, b: 60 }
+                        };
+                        
+                        const config = {
+                            responsive: true,
+                            displayModeBar: true
+                        };
+                        
+                        Plotly.newPlot('plot-container', traces, layout, config);
+                    }
+                })
+                .catch(error => console.log('Error fetching ' + file, error));
+        });
+    </script>
+</body>
+</html>
